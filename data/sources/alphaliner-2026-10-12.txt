@@ -1,0 +1,28 @@
+Alphaliner TOP 100 / 12 Oct 2026
+Retrieval: web search index, 2026-10-13. Direct HTTP retrieval failed DNS resolution.
+Source: https://alphaliner.axsmarine.com/PublicTop100/?_sp=b09a4555-4cee-4503-84f5-d9b4d3d9c3d9
+
+Rank | Operator | Teu | Share
+1  | Mediterranean Shg Co  | 7,452,694  | 21.5%  |   
+2  | Maersk  | 4,728,084  | 13.7%  |   
+3  | CMA CGM Group  | 4,471,328  | 12.9%  |   
+4  | COSCO Group  | 3,656,295  | 10.6%  |   
+5  | Hapag-Lloyd  | 2,410,123  | 7.0%  |   
+6  | ONE (Ocean Network Express)  | 2,191,058  | 6.3%  |   
+7  | Evergreen Line  | 2,040,081  | 5.9%  |   
+8  | HMM Co Ltd  | 1,034,348  | 3.0%  |   
+9  | Yang Ming Marine Transport Corp.  | 771,280  | 2.2%  |   
+10  | Zim  | 691,560  | 2.0%  |   
+
+Rank | Operator | Total TEU | Ships
+1 | Mediterranean Shg Co | 7,452,694 | 1016
+2 | Maersk | 4,728,084 | 750
+3 | CMA CGM Group | 4,471,328 | 729
+4 | COSCO Group | 3,656,295 | 565
+5 | Hapag-Lloyd | 2,410,123 | 289
+6 | ONE (Ocean Network Express) | 2,191,058 | 271
+7 | Evergreen Line | 2,040,081 | 243
+8 | HMM Co Ltd | 1,034,348 | 97
+9 | Yang Ming Marine Transport Corp. | 771,280 | 99
+10 | Zim | 691,560 | 113
+

@@ -1,0 +1,91 @@
+{
+  "sourceId": "alphaliner",
+  "asOf": "2026-10-12",
+  "metric": "operated-container-capacity-teu",
+  "scope": "consolidated",
+  "sourceUrl": "https://alphaliner.axsmarine.com/PublicTop100/",
+  "retrievedAt": "2026-10-13T03:53:00.691Z",
+  "retrievalMethod": "web-search-index",
+  "entries": [
+    {
+      "rank": 1,
+      "carrierId": "msc",
+      "sourceName": "Mediterranean Shg Co",
+      "capacityTeu": 7452694,
+      "sharePercent": 21.5,
+      "shipCount": 1016
+    },
+    {
+      "rank": 2,
+      "carrierId": "maersk",
+      "sourceName": "Maersk",
+      "capacityTeu": 4728084,
+      "sharePercent": 13.7,
+      "shipCount": 750
+    },
+    {
+      "rank": 3,
+      "carrierId": "cma-cgm",
+      "sourceName": "CMA CGM Group",
+      "capacityTeu": 4471328,
+      "sharePercent": 12.9,
+      "shipCount": 729
+    },
+    {
+      "rank": 4,
+      "carrierId": "cosco",
+      "sourceName": "COSCO Group",
+      "capacityTeu": 3656295,
+      "sharePercent": 10.6,
+      "shipCount": 565
+    },
+    {
+      "rank": 5,
+      "carrierId": "hapag-lloyd",
+      "sourceName": "Hapag-Lloyd",
+      "capacityTeu": 2410123,
+      "sharePercent": 7,
+      "shipCount": 289
+    },
+    {
+      "rank": 6,
+      "carrierId": "one",
+      "sourceName": "ONE (Ocean Network Express)",
+      "capacityTeu": 2191058,
+      "sharePercent": 6.3,
+      "shipCount": 271
+    },
+    {
+      "rank": 7,
+      "carrierId": "evergreen",
+      "sourceName": "Evergreen Line",
+      "capacityTeu": 2040081,
+      "sharePercent": 5.9,
+      "shipCount": 243
+    },
+    {
+      "rank": 8,
+      "carrierId": "hmm",
+      "sourceName": "HMM Co Ltd",
+      "capacityTeu": 1034348,
+      "sharePercent": 3,
+      "shipCount": 97
+    },
+    {
+      "rank": 9,
+      "carrierId": "yang-ming",
+      "sourceName": "Yang Ming Marine Transport Corp.",
+      "capacityTeu": 771280,
+      "sharePercent": 2.2,
+      "shipCount": 99
+    },
+    {
+      "rank": 10,
+      "carrierId": "zim",
+      "sourceName": "Zim",
+      "capacityTeu": 691560,
+      "sharePercent": 2,
+      "shipCount": 113
+    }
+  ]
+}

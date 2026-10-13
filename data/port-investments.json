@@ -1,0 +1,704 @@
+[
+  {
+    "internalCode": "GMD",
+    "stockTicker": "GMD",
+    "nameVi": "Gemadept",
+    "nameEn": null,
+    "seaportName": "Đa cảng",
+    "sourceLocation": "Đa cảng",
+    "region": "south",
+    "regions": [
+      "north",
+      "central",
+      "south"
+    ],
+    "entityType": "group",
+    "exchange": "HOSE",
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "coordinateAccuracy": "approximate",
+    "operationalStatus": "unverified",
+    "officialCodes": [],
+    "sources": {
+      "directory": null,
+      "codes": null,
+      "coordinates": "https://www.gemadept.com.vn/he-sinh-thai-cang-logistics/",
+      "operation": null
+    },
+    "website": "https://www.gemadept.com.vn/",
+    "verifiedAt": null,
+    "sourceId": "user-reference-2026-10-13",
+    "appendix": "",
+    "ordinal": 1,
+    "sourcePages": [],
+    "referenceStatus": "user-provided",
+    "mapVisible": true,
+    "mapLocations": [
+      {
+        "id": "north",
+        "label": "Nam Đình Vũ",
+        "latitude": 20.82,
+        "longitude": 106.81,
+        "region": "north",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://www.gemadept.com.vn/he-sinh-thai-cang-logistics/"
+      },
+      {
+        "id": "central",
+        "label": "Dung Quất",
+        "latitude": 15.42,
+        "longitude": 108.79,
+        "region": "central",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://www.gemadept.com.vn/he-sinh-thai-cang-logistics/"
+      },
+      {
+        "id": "south",
+        "label": "Gemalink / Cái Mép",
+        "latitude": 10.52,
+        "longitude": 107.02,
+        "region": "south",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://www.gemadept.com.vn/he-sinh-thai-cang-logistics/"
+      }
+    ]
+  },
+  {
+    "internalCode": "PHP",
+    "stockTicker": "PHP",
+    "nameVi": "Cảng Hải Phòng",
+    "nameEn": null,
+    "seaportName": "Hải Phòng",
+    "sourceLocation": "Hải Phòng",
+    "region": "north",
+    "regions": [
+      "north"
+    ],
+    "entityType": "port",
+    "exchange": "UPCOM",
+    "address": null,
+    "latitude": 20.86,
+    "longitude": 106.75,
+    "coordinateAccuracy": "approximate",
+    "operationalStatus": "unverified",
+    "officialCodes": [],
+    "sources": {
+      "directory": null,
+      "codes": null,
+      "coordinates": "https://haiphongport.com.vn/",
+      "operation": null
+    },
+    "website": "https://haiphongport.com.vn/",
+    "verifiedAt": null,
+    "sourceId": "user-reference-2026-10-13",
+    "appendix": "",
+    "ordinal": 2,
+    "sourcePages": [],
+    "referenceStatus": "user-provided",
+    "mapVisible": true,
+    "mapLocations": [
+      {
+        "id": "area",
+        "label": "Cảng Hải Phòng / Hải Phòng",
+        "latitude": 20.86,
+        "longitude": 106.75,
+        "region": "north",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://haiphongport.com.vn/"
+      }
+    ]
+  },
+  {
+    "internalCode": "VGR",
+    "stockTicker": "VGR",
+    "nameVi": "Cảng Xanh VIP",
+    "nameEn": null,
+    "seaportName": "Hải Phòng",
+    "sourceLocation": "Hải Phòng",
+    "region": "north",
+    "regions": [
+      "north"
+    ],
+    "entityType": "port",
+    "exchange": "UPCOM",
+    "address": null,
+    "latitude": 20.84,
+    "longitude": 106.78,
+    "coordinateAccuracy": "approximate",
+    "operationalStatus": "unverified",
+    "officialCodes": [],
+    "sources": {
+      "directory": null,
+      "codes": null,
+      "coordinates": "https://vipgreenport.com.vn/index.php/s-co-dong",
+      "operation": null
+    },
+    "website": "https://vipgreenport.com.vn/",
+    "verifiedAt": null,
+    "sourceId": "user-reference-2026-10-13",
+    "appendix": "",
+    "ordinal": 3,
+    "sourcePages": [],
+    "referenceStatus": "user-provided",
+    "mapVisible": true,
+    "mapLocations": [
+      {
+        "id": "area",
+        "label": "Cảng Xanh VIP / Hải Phòng",
+        "latitude": 20.84,
+        "longitude": 106.78,
+        "region": "north",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://vipgreenport.com.vn/index.php/s-co-dong"
+      }
+    ]
+  },
+  {
+    "internalCode": "DVP",
+    "stockTicker": "DVP",
+    "nameVi": "Cảng Đình Vũ",
+    "nameEn": null,
+    "seaportName": "Hải Phòng",
+    "sourceLocation": "Hải Phòng",
+    "region": "north",
+    "regions": [
+      "north"
+    ],
+    "entityType": "port",
+    "exchange": "HOSE",
+    "address": null,
+    "latitude": 20.85,
+    "longitude": 106.79,
+    "coordinateAccuracy": "approximate",
+    "operationalStatus": "unverified",
+    "officialCodes": [],
+    "sources": {
+      "directory": null,
+      "codes": null,
+      "coordinates": "https://dinhvuport.com.vn/",
+      "operation": null
+    },
+    "website": "https://dinhvuport.com.vn/",
+    "verifiedAt": null,
+    "sourceId": "user-reference-2026-10-13",
+    "appendix": "",
+    "ordinal": 4,
+    "sourcePages": [],
+    "referenceStatus": "user-provided",
+    "mapVisible": true,
+    "mapLocations": [
+      {
+        "id": "area",
+        "label": "Cảng Đình Vũ / Hải Phòng",
+        "latitude": 20.85,
+        "longitude": 106.79,
+        "region": "north",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://dinhvuport.com.vn/"
+      }
+    ]
+  },
+  {
+    "internalCode": "PDN",
+    "stockTicker": "PDN",
+    "nameVi": "Cảng Đồng Nai",
+    "nameEn": null,
+    "seaportName": "Đồng Nai",
+    "sourceLocation": "Đồng Nai",
+    "region": "south",
+    "regions": [
+      "south"
+    ],
+    "entityType": "port",
+    "exchange": "HOSE",
+    "address": null,
+    "latitude": 10.9,
+    "longitude": 106.84,
+    "coordinateAccuracy": "approximate",
+    "operationalStatus": "unverified",
+    "officialCodes": [],
+    "sources": {
+      "directory": null,
+      "codes": null,
+      "coordinates": "https://dongnai-port.com/",
+      "operation": null
+    },
+    "website": "https://dongnai-port.com/",
+    "verifiedAt": null,
+    "sourceId": "user-reference-2026-10-13",
+    "appendix": "",
+    "ordinal": 5,
+    "sourcePages": [],
+    "referenceStatus": "user-provided",
+    "mapVisible": true,
+    "mapLocations": [
+      {
+        "id": "area",
+        "label": "Cảng Đồng Nai / Đồng Nai",
+        "latitude": 10.9,
+        "longitude": 106.84,
+        "region": "south",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://dongnai-port.com/"
+      }
+    ]
+  },
+  {
+    "internalCode": "CDN",
+    "stockTicker": "CDN",
+    "nameVi": "Cảng Đà Nẵng",
+    "nameEn": null,
+    "seaportName": "Đà Nẵng",
+    "sourceLocation": "Đà Nẵng",
+    "region": "central",
+    "regions": [
+      "central"
+    ],
+    "entityType": "port",
+    "exchange": "HNX",
+    "address": null,
+    "latitude": 16.12,
+    "longitude": 108.21,
+    "coordinateAccuracy": "approximate",
+    "operationalStatus": "unverified",
+    "officialCodes": [],
+    "sources": {
+      "directory": null,
+      "codes": null,
+      "coordinates": "https://danangport.com/",
+      "operation": null
+    },
+    "website": "https://danangport.com/",
+    "verifiedAt": null,
+    "sourceId": "user-reference-2026-10-13",
+    "appendix": "",
+    "ordinal": 6,
+    "sourcePages": [],
+    "referenceStatus": "user-provided",
+    "mapVisible": true,
+    "mapLocations": [
+      {
+        "id": "area",
+        "label": "Cảng Đà Nẵng / Đà Nẵng",
+        "latitude": 16.12,
+        "longitude": 108.21,
+        "region": "central",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://danangport.com/"
+      }
+    ]
+  },
+  {
+    "internalCode": "CQN",
+    "stockTicker": "CQN",
+    "nameVi": "Cảng Quảng Ninh",
+    "nameEn": null,
+    "seaportName": "Quảng Ninh",
+    "sourceLocation": "Quảng Ninh",
+    "region": "north",
+    "regions": [
+      "north"
+    ],
+    "entityType": "port",
+    "exchange": "UPCOM",
+    "address": null,
+    "latitude": 20.98,
+    "longitude": 107.05,
+    "coordinateAccuracy": "approximate",
+    "operationalStatus": "unverified",
+    "officialCodes": [],
+    "sources": {
+      "directory": null,
+      "codes": null,
+      "coordinates": "https://quangninhport.com.vn/vi/luong-vao-cang/thong-tin-luong-vao-cang.html",
+      "operation": null
+    },
+    "website": "https://quangninhport.com.vn/",
+    "verifiedAt": null,
+    "sourceId": "user-reference-2026-10-13",
+    "appendix": "",
+    "ordinal": 7,
+    "sourcePages": [],
+    "referenceStatus": "user-provided",
+    "mapVisible": true,
+    "mapLocations": [
+      {
+        "id": "area",
+        "label": "Cảng Quảng Ninh / Quảng Ninh",
+        "latitude": 20.98,
+        "longitude": 107.05,
+        "region": "north",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://quangninhport.com.vn/vi/luong-vao-cang/thong-tin-luong-vao-cang.html"
+      }
+    ]
+  },
+  {
+    "internalCode": "DXP",
+    "stockTicker": "DXP",
+    "nameVi": "Cảng Đoạn Xá",
+    "nameEn": null,
+    "seaportName": "Hải Phòng",
+    "sourceLocation": "Hải Phòng",
+    "region": "north",
+    "regions": [
+      "north"
+    ],
+    "entityType": "port",
+    "exchange": "HNX",
+    "address": null,
+    "latitude": 20.87,
+    "longitude": 106.72,
+    "coordinateAccuracy": "approximate",
+    "operationalStatus": "unverified",
+    "officialCodes": [],
+    "sources": {
+      "directory": null,
+      "codes": null,
+      "coordinates": "https://doanxaport.com.vn/",
+      "operation": null
+    },
+    "website": "https://doanxaport.com.vn/",
+    "verifiedAt": null,
+    "sourceId": "user-reference-2026-10-13",
+    "appendix": "",
+    "ordinal": 8,
+    "sourcePages": [],
+    "referenceStatus": "user-provided",
+    "mapVisible": true,
+    "mapLocations": [
+      {
+        "id": "area",
+        "label": "Cảng Đoạn Xá / Hải Phòng",
+        "latitude": 20.87,
+        "longitude": 106.72,
+        "region": "north",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://doanxaport.com.vn/"
+      }
+    ]
+  },
+  {
+    "internalCode": "PSP",
+    "stockTicker": "PSP",
+    "nameVi": "Cảng Dầu khí Đình Vũ",
+    "nameEn": null,
+    "seaportName": "Hải Phòng",
+    "sourceLocation": "Hải Phòng",
+    "region": "north",
+    "regions": [
+      "north"
+    ],
+    "entityType": "port",
+    "exchange": "UPCOM",
+    "address": null,
+    "latitude": 20.85,
+    "longitude": 106.78,
+    "coordinateAccuracy": "approximate",
+    "operationalStatus": "unverified",
+    "officialCodes": [],
+    "sources": {
+      "directory": null,
+      "codes": null,
+      "coordinates": "https://ptscdinhvu.com.vn/",
+      "operation": null
+    },
+    "website": "https://ptscdinhvu.com.vn/",
+    "verifiedAt": null,
+    "sourceId": "user-reference-2026-10-13",
+    "appendix": "",
+    "ordinal": 9,
+    "sourcePages": [],
+    "referenceStatus": "user-provided",
+    "mapVisible": true,
+    "mapLocations": [
+      {
+        "id": "area",
+        "label": "Cảng Dầu khí Đình Vũ / Hải Phòng",
+        "latitude": 20.85,
+        "longitude": 106.78,
+        "region": "north",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://ptscdinhvu.com.vn/"
+      }
+    ]
+  },
+  {
+    "internalCode": "PAP",
+    "stockTicker": "PAP",
+    "nameVi": "Cảng Phước An",
+    "nameEn": null,
+    "seaportName": "Đồng Nai",
+    "sourceLocation": "Đồng Nai",
+    "region": "south",
+    "regions": [
+      "south"
+    ],
+    "entityType": "port",
+    "exchange": "UPCOM",
+    "address": null,
+    "latitude": 10.67,
+    "longitude": 106.94,
+    "coordinateAccuracy": "approximate",
+    "operationalStatus": "unverified",
+    "officialCodes": [],
+    "sources": {
+      "directory": null,
+      "codes": null,
+      "coordinates": "https://www.phuocanport.com/vi-tri-dia-ly-co-so-ha-tang/vi-tri-dia-ly/",
+      "operation": null
+    },
+    "website": "https://www.phuocanport.com/",
+    "verifiedAt": null,
+    "sourceId": "user-reference-2026-10-13",
+    "appendix": "",
+    "ordinal": 10,
+    "sourcePages": [],
+    "referenceStatus": "user-provided",
+    "mapVisible": true,
+    "mapLocations": [
+      {
+        "id": "area",
+        "label": "Cảng Phước An / Đồng Nai",
+        "latitude": 10.67,
+        "longitude": 106.94,
+        "region": "south",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://www.phuocanport.com/vi-tri-dia-ly-co-so-ha-tang/vi-tri-dia-ly/"
+      }
+    ]
+  },
+  {
+    "internalCode": "SGP",
+    "stockTicker": "SGP",
+    "nameVi": "Cảng Sài Gòn",
+    "nameEn": null,
+    "seaportName": "TP.HCM",
+    "sourceLocation": "TP.HCM",
+    "region": "south",
+    "regions": [
+      "south"
+    ],
+    "entityType": "port",
+    "exchange": "UPCOM",
+    "address": null,
+    "latitude": 10.75,
+    "longitude": 106.73,
+    "coordinateAccuracy": "approximate",
+    "operationalStatus": "unverified",
+    "officialCodes": [],
+    "sources": {
+      "directory": null,
+      "codes": null,
+      "coordinates": "https://saigonport.vn/",
+      "operation": null
+    },
+    "website": "https://saigonport.vn/",
+    "verifiedAt": null,
+    "sourceId": "user-reference-2026-10-13",
+    "appendix": "",
+    "ordinal": 11,
+    "sourcePages": [],
+    "referenceStatus": "user-provided",
+    "mapVisible": true,
+    "mapLocations": [
+      {
+        "id": "area",
+        "label": "Cảng Sài Gòn / TP.HCM",
+        "latitude": 10.75,
+        "longitude": 106.73,
+        "region": "south",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://saigonport.vn/"
+      }
+    ]
+  },
+  {
+    "internalCode": "QNP",
+    "stockTicker": "QNP",
+    "nameVi": "Cảng Quy Nhơn",
+    "nameEn": null,
+    "seaportName": "Quy Nhơn",
+    "sourceLocation": "Quy Nhơn",
+    "region": "central",
+    "regions": [
+      "central"
+    ],
+    "entityType": "port",
+    "exchange": "HOSE",
+    "address": null,
+    "latitude": 13.78,
+    "longitude": 109.25,
+    "coordinateAccuracy": "approximate",
+    "operationalStatus": "unverified",
+    "officialCodes": [],
+    "sources": {
+      "directory": null,
+      "codes": null,
+      "coordinates": "https://quynhonport.vn/",
+      "operation": null
+    },
+    "website": "https://quynhonport.vn/",
+    "verifiedAt": null,
+    "sourceId": "user-reference-2026-10-13",
+    "appendix": "",
+    "ordinal": 12,
+    "sourcePages": [],
+    "referenceStatus": "user-provided",
+    "mapVisible": true,
+    "mapLocations": [
+      {
+        "id": "area",
+        "label": "Cảng Quy Nhơn / Quy Nhơn",
+        "latitude": 13.78,
+        "longitude": 109.25,
+        "region": "central",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://quynhonport.vn/"
+      }
+    ]
+  },
+  {
+    "internalCode": "QSP",
+    "stockTicker": "QSP",
+    "nameVi": "Tân Cảng Quy Nhơn",
+    "nameEn": null,
+    "seaportName": "Quy Nhơn",
+    "sourceLocation": "Quy Nhơn",
+    "region": "central",
+    "regions": [
+      "central"
+    ],
+    "entityType": "port",
+    "exchange": "UPCOM",
+    "address": null,
+    "latitude": 13.79,
+    "longitude": 109.24,
+    "coordinateAccuracy": "approximate",
+    "operationalStatus": "unverified",
+    "officialCodes": [],
+    "sources": {
+      "directory": null,
+      "codes": null,
+      "coordinates": "https://saigonnewport.com.vn/",
+      "operation": null
+    },
+    "website": null,
+    "verifiedAt": null,
+    "sourceId": "user-reference-2026-10-13",
+    "appendix": "",
+    "ordinal": 13,
+    "sourcePages": [],
+    "referenceStatus": "user-provided",
+    "mapVisible": true,
+    "mapLocations": [
+      {
+        "id": "area",
+        "label": "Tân Cảng Quy Nhơn / Quy Nhơn",
+        "latitude": 13.79,
+        "longitude": 109.24,
+        "region": "central",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://saigonnewport.com.vn/"
+      }
+    ]
+  },
+  {
+    "internalCode": "NAP",
+    "stockTicker": "NAP",
+    "nameVi": "Cảng Nghệ Tĩnh",
+    "nameEn": null,
+    "seaportName": "Nghệ An",
+    "sourceLocation": "Nghệ An",
+    "region": "central",
+    "regions": [
+      "central"
+    ],
+    "entityType": "port",
+    "exchange": "HNX",
+    "address": null,
+    "latitude": 18.82,
+    "longitude": 105.72,
+    "coordinateAccuracy": "approximate",
+    "operationalStatus": "unverified",
+    "officialCodes": [],
+    "sources": {
+      "directory": null,
+      "codes": null,
+      "coordinates": "https://nghetinhport.vn/thong-bao-cap-nhat-thong-tin-dia-chi/",
+      "operation": null
+    },
+    "website": "https://nghetinhport.vn/",
+    "verifiedAt": null,
+    "sourceId": "user-reference-2026-10-13",
+    "appendix": "",
+    "ordinal": 14,
+    "sourcePages": [],
+    "referenceStatus": "user-provided",
+    "mapVisible": true,
+    "mapLocations": [
+      {
+        "id": "area",
+        "label": "Cảng Nghệ Tĩnh / Nghệ An",
+        "latitude": 18.82,
+        "longitude": 105.72,
+        "region": "central",
+        "accuracy": "approximate",
+        "method": "area-estimate",
+        "sourceUrl": "https://nghetinhport.vn/thong-bao-cap-nhat-thong-tin-dia-chi/"
+      }
+    ]
+  },
+  {
+    "internalCode": "MVN",
+    "stockTicker": "MVN",
+    "nameVi": "VIMC",
+    "nameEn": null,
+    "seaportName": "Toàn quốc",
+    "sourceLocation": "Toàn quốc",
+    "region": "north",
+    "regions": [
+      "north",
+      "central",
+      "south"
+    ],
+    "entityType": "group",
+    "exchange": "UPCOM",
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "coordinateAccuracy": "unknown",
+    "operationalStatus": "unverified",
+    "officialCodes": [],
+    "sources": {
+      "directory": null,
+      "codes": null,
+      "coordinates": null,
+      "operation": null
+    },
+    "website": "https://vimc.co/",
+    "verifiedAt": null,
+    "sourceId": "user-reference-2026-10-13",
+    "appendix": "",
+    "ordinal": 15,
+    "sourcePages": [],
+    "referenceStatus": "user-provided",
+    "mapVisible": false
+  }
+]
