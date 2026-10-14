@@ -5,14 +5,7 @@ import './php-contribution-chart.css';
 import type {Locale} from '@/lib/i18n';
 import type {ContributionMonth} from '@/lib/php/monthly';
 import {phpMessages} from '@/lib/php/messages';
-
-const sites=[
- {id:'php-tan-vu',vi:'Tân Vũ',en:'Tan Vu',color:'#268bd2'},
- {id:'php-hoang-dieu',vi:'Hoàng Diệu',en:'Hoang Dieu',color:'#20b7a5'},
- {id:'php-chua-ve',vi:'Chùa Vẽ',en:'Chua Ve',color:'#9b87dd'},
- {id:'php-htit',vi:'HTIT',en:'HTIT',color:'#e5ae52'},
- {id:'dvp-dinh-vu',vi:'Đình Vũ',en:'Dinh Vu',color:'#de7985'},
-] as const;
+import {PHP_SITE_APPEARANCE as sites} from '@/lib/php/presentation';
 
 export function PhpContributionChart({locale,year,months}:{locale:Locale;year:number;months:ContributionMonth[]}){
  const [metric,setMetric]=useState<'dwt'|'calls'>('dwt');
