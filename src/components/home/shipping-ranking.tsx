@@ -12,7 +12,7 @@ export function ShippingRankingSection({ranking,locale}:{ranking:ShippingRanking
  const t=getMessages(locale);const number=new Intl.NumberFormat(locale==='vi'?'vi-VN':'en-US');const percentage=(n:number)=>new Intl.NumberFormat(locale==='vi'?'vi-VN':'en-US',{minimumFractionDigits:1,maximumFractionDigits:1}).format(n)+'%';
  const date=new Intl.DateTimeFormat(locale==='vi'?'vi-VN':'en-GB',{day:'2-digit',month:'2-digit',year:'numeric',timeZone:'UTC'}).format(new Date(ranking.asOf+'T00:00:00Z'));
  const axisMax=Math.max(25,Math.ceil(Math.max(...ranking.entries.map(e=>e.sharePercent))/5)*5);
- return <section className="shipping-section" aria-labelledby="shipping-title"><div className="section-heading"><div><p className="eyebrow">{t.shippingEyebrow}</p><h2 id="shipping-title">{t.shippingTitle}</h2><p>{t.shippingIntro}</p></div><span className="shipping-date">{t.shippingAsOf}<strong>{date}</strong></span></div>
+ return <section className="shipping-section" aria-labelledby="shipping-title"><div className="section-heading"><div><p className="eyebrow">{t.shippingEyebrow}</p><h2 id="shipping-title">{t.shippingTitle}</h2><p>{t.shippingIntro}</p></div><span className="shipping-date">{ranking.asOfBasis==='retrieval-date'?(locale==='vi'?'Ngày thu thập':'Collected on'):t.shippingAsOf}<strong>{date}</strong></span></div>
   <div className="shipping-chart" style={{'--chart-steps':axisMax/5} as import('react').CSSProperties}>
    <div className="shipping-axis"><span>{t.shippingShare}</span><div>{Array.from({length:axisMax/5+1},(_,i)=><span key={i}>{i*5}%</span>)}</div></div>
    <ol className="shipping-list">{ranking.entries.map(entry=>{const carrier=ranking.carriers.find(c=>c.id===entry.carrierId)!;return <li className="shipping-row" key={carrier.id}>

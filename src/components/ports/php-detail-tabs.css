@@ -1,0 +1,14 @@
+.php-detail-tab-list {display:flex;gap:28px;border-bottom:1px solid var(--border);margin-bottom:32px;}
+.php-detail-tab {position:relative;display:inline-flex;align-items:center;gap:9px;padding:14px 4px 16px;background:transparent;color:var(--muted-foreground);font-size:14px;font-weight:550;cursor:pointer;border:0;}
+.php-detail-tab:hover {color:var(--foreground);}
+.php-detail-tab[data-active] {color:var(--ocean-link);}
+.php-detail-tab[data-active]::after {content:'';position:absolute;bottom:-1px;left:0;right:0;height:3px;border-radius:3px 3px 0 0;background:var(--ocean-link);}
+.php-detail-tab:focus-visible {outline:2px solid var(--ring);outline-offset:4px;border-radius:5px;}
+.php-detail-panel:focus-visible {outline:2px solid var(--ring);outline-offset:5px;border-radius:12px;}
+.php-detail-panel[hidden] {display:none;}
+.php-news-placeholder {display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:320px;padding:40px 24px;text-align:center;border:1px solid var(--border);border-radius:18px;background:var(--card);}
+.php-news-icon {display:inline-flex;padding:18px;margin-bottom:20px;border-radius:16px;background:var(--muted);color:var(--ocean-link);}
+.php-news-placeholder h2 {color:var(--foreground);font-size:22px;font-weight:600;letter-spacing:-.025em;}
+.php-news-placeholder p {max-width:450px;margin:10px 0 22px;color:var(--muted-foreground);font-size:13px;line-height:1.8;}
+.php-news-coming-soon {padding:6px 12px;border:1px solid var(--border);border-radius:999px;color:var(--muted-foreground);font-size:11px;background:var(--muted);}
+@media(max-width:640px) {.php-detail-tab-list {gap:22px;margin-bottom:24px;}.php-detail-tab {font-size:13px;}.php-news-placeholder {min-height:280px;padding:32px 20px;}.php-news-placeholder h2 {font-size:20px;}}

@@ -1,0 +1,3 @@
+export type Movement='arrival'|'departure'|'transfer'|'transit';
+export type PlannedEvent={key:string;sourceOrdinal:number;movement:Movement;plannedTime:string|null;vesselName:string;dwt:number|null;gt:number|null;loa:number|null;draft:number|null;fromName:string;toName:string;fromTerminal:string|null;toTerminal:string|null;channel:string;tugs:string;agent:string;pilot:string;status:'planned';callMatchStatus:'unlinked';supplementalVariants?:{draft:number|null;channel:string;tugs:string;agent:string;pilot:string}[];rawCells:string[]};
+export type PlanSnapshot={planDate:string;fetchedAt:string;sourceUrl:string;rawHtml:string;contentHash:string;events:PlannedEvent[];duplicateCount:number};

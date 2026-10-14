@@ -1,13 +1,27 @@
 'use client';
-import { Button } from '@/components/ui/button';
-import { Table,TableBody,TableCell,TableHead,TableHeader,TableRow } from '@/components/ui/table';
-import { getMessages,portName,type Locale } from '@/lib/i18n';
-import type { PortRecord } from '@/lib/ports/types';
-export function PortDirectory({ports,locale,page,onPage,selectedId,onSelect}:{ports:PortRecord[];locale:Locale;page:number;onPage:(p:number)=>void;selectedId:string|null;onSelect:(id:string)=>void}) {
- const t=getMessages(locale);const pages=Math.ceil(ports.length/12);const safePage=Math.min(page,Math.max(0,pages-1));const visible=ports.slice(safePage*12,safePage*12+12);
- return <div className="overflow-hidden rounded-2xl border border-border bg-card">
- <Table><TableHeader><TableRow className="bg-muted/60 hover:bg-muted"><TableHead className="pl-6">{t.name}</TableHead><TableHead>{t.code}</TableHead><TableHead>{t.location}</TableHead><TableHead>{t.status}</TableHead></TableRow></TableHeader>
- <TableBody>{visible.map(p=><TableRow key={p.internalCode} data-state={selectedId===p.internalCode?'selected':undefined} className="hover:bg-muted/50"><TableCell className="max-w-72 whitespace-normal py-4 pl-6"><button onClick={()=>onSelect(p.internalCode)} className="text-left text-sm font-medium text-foreground hover:text-accent-foreground hover:underline">{portName(p,locale)}</button><p className="mt-1 text-[11px] text-muted-foreground">{p.entityType==='group'?p.sourceLocation:t[p.region]}</p></TableCell><TableCell className="text-xs"><p className="font-mono text-muted-foreground">{p.officialCodes[0]?.value||p.internalCode}</p><span className="text-[10px] text-muted-foreground">{p.officialCodes[0]?`${p.officialCodes[0].type} · ${p.officialCodes[0].scope==='location'?t.locationScope:t.terminalScope}`:p.exchange}</span></TableCell><TableCell className="max-w-48 whitespace-normal text-xs text-muted-foreground">{p.sourceLocation}<p className="mt-1 text-[10px] text-muted-foreground">{p.latitude===null&&!p.mapLocations?.length?t.unknownPosition:p.coordinateAccuracy==='verified'?t.verifiedPosition:t.approximate}</p></TableCell><TableCell><span className={`inline-flex rounded-full px-2 py-1 text-[10px] ${p.operationalStatus==='active'?'bg-emerald-50 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300':'bg-muted text-muted-foreground'}`}>{t[p.operationalStatus]}</span></TableCell></TableRow>)}{!visible.length&&<TableRow><TableCell colSpan={4} className="h-36 text-center text-muted-foreground">{t.noResults}</TableCell></TableRow>}</TableBody></Table>
- <div className="flex flex-wrap items-center justify-between gap-3 border-t px-6 py-4"><p className="text-xs text-muted-foreground">{t.showing} {ports.length?safePage*12+1:0}–{Math.min((safePage+1)*12,ports.length)} {t.of} {ports.length} {t.entries}</p><div className="flex items-center gap-3"><Button variant="outline" size="sm" disabled={safePage===0} onClick={()=>onPage(safePage-1)}>{t.prev}</Button><span className="text-xs text-muted-foreground">{pages?safePage+1:0}/{pages}</span><Button variant="outline" size="sm" disabled={safePage>=pages-1} onClick={()=>onPage(safePage+1)}>{t.next}</Button></div></div>
+
+import Link from 'next/link';
+import {Anchor,ArrowUpRight,Clock3,MapPin} from 'lucide-react';
+import {getMessages,portName,type Locale} from '@/lib/i18n';
+import type {PortRecord} from '@/lib/ports/types';
+import './port-directory.css';
+
+export function PortDirectory({ports,locale,selectedId}:{ports:PortRecord[];locale:Locale;selectedId:string|null}){
+ const t=getMessages(locale),vi=locale==='vi';
+ const sorted=[...ports].sort((a,b)=>Number(b.stockTicker==='PHP')-Number(a.stockTicker==='PHP'));
+ const ready=ports.filter(port=>port.stockTicker==='PHP').length;
+ return <div className="port-catalog">
+  <div className="port-catalog-summary"><span><strong>{ports.length}</strong> {vi?'cảng / doanh nghiệp':'ports / operators'}</span><span className="port-catalog-availability"><i/>{ready} {vi?'có trang chi tiết':'detail page available'}</span></div>
+  {ports.length?<div className="port-catalog-grid">{sorted.map(port=>{
+   const available=port.stockTicker==='PHP';
+   const content=<>
+    <div className="port-catalog-card-top"><span className="port-catalog-symbol"><Anchor size={20}/></span><span className={`port-catalog-badge${available?' is-ready':''}`}>{available?(vi?'Đã có dữ liệu':'Data available'):(vi?'Đang triển khai':'In development')}</span></div>
+    <div className="port-catalog-code"><strong>{port.stockTicker||port.internalCode}</strong>{port.exchange&&<span>{port.exchange}</span>}</div>
+    <h3>{portName(port,locale)}</h3>
+    <p className="port-catalog-location"><MapPin size={14}/>{port.sourceLocation}<span>· {port.entityType==='group'?(vi?'Hệ thống cảng':'Port network'):t[port.region]}</span></p>
+    <div className="port-catalog-card-footer">{available?<><span>{vi?'Khám phá dữ liệu cảng':'Explore port data'}</span><span className="port-catalog-cta">{vi?'Xem chi tiết':'View details'}<ArrowUpRight size={16}/></span></>:<><span>{vi?'Trang chi tiết đang được xây dựng':'Detail page is being prepared'}</span><Clock3 size={16}/></>}</div>
+   </>;
+   return available?<Link key={port.internalCode} href={`/${locale}/ports/PHP`} className="port-catalog-card is-available" aria-label={`${portName(port,locale)} · ${vi?'Xem chi tiết':'View details'}`}>{content}</Link>:<article key={port.internalCode} className={`port-catalog-card is-pending${selectedId===port.internalCode?' is-selected':''}`}>{content}</article>;
+  })}</div>:<div className="port-catalog-empty" role="status"><Anchor size={28}/><p>{t.noResults}</p></div>}
  </div>;
 }

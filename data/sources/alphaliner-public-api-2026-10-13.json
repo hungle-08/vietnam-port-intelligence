@@ -1,0 +1,112 @@
+[
+  {
+    "method": "getTop100Table",
+    "type": "rpc",
+    "result": [
+      {
+        "rank": 1,
+        "operator": "Mediterranean Shg Co",
+        "company_id": "289",
+        "totalTeu": 7452694,
+        "totalShips": 1016,
+        "percent": 21.5
+      },
+      {
+        "rank": 2,
+        "operator": "Maersk",
+        "company_id": "194808",
+        "totalTeu": 4728084,
+        "totalShips": 750,
+        "percent": 13.7
+      },
+      {
+        "rank": 3,
+        "operator": "CMA CGM Group",
+        "company_id": "191942",
+        "totalTeu": 4471328,
+        "totalShips": 729,
+        "percent": 12.9
+      },
+      {
+        "rank": 4,
+        "operator": "COSCO Group",
+        "company_id": "341",
+        "totalTeu": 3656295,
+        "totalShips": 565,
+        "percent": 10.6
+      },
+      {
+        "rank": 5,
+        "operator": "Hapag-Lloyd",
+        "company_id": "179",
+        "totalTeu": 2410123,
+        "totalShips": 289,
+        "percent": 7
+      },
+      {
+        "rank": 6,
+        "operator": "ONE (Ocean Network Express)",
+        "company_id": "192149",
+        "totalTeu": 2191058,
+        "totalShips": 271,
+        "percent": 6.3
+      },
+      {
+        "rank": 7,
+        "operator": "Evergreen Line",
+        "company_id": "191993",
+        "totalTeu": 2040081,
+        "totalShips": 243,
+        "percent": 5.9
+      },
+      {
+        "rank": 8,
+        "operator": "HMM Co Ltd",
+        "company_id": "179932",
+        "totalTeu": 1034348,
+        "totalShips": 97,
+        "percent": 3
+      },
+      {
+        "rank": 9,
+        "operator": "Yang Ming Marine Transport Corp.",
+        "company_id": "483",
+        "totalTeu": 771280,
+        "totalShips": 99,
+        "percent": 2.2
+      },
+      {
+        "rank": 10,
+        "operator": "Zim",
+        "company_id": "484",
+        "totalTeu": 691560,
+        "totalShips": 113,
+        "percent": 2
+      }
+    ]
+  },
+  {
+    "method": "getTextCalculations",
+    "type": "rpc",
+    "result": {
+      "active": {
+        "sum_vessels": "7663",
+        "sum_teu": "34875904",
+        "sum_dwt": "414812571"
+      },
+      "fully": {
+        "sum_vessels": "6858",
+        "sum_teu": "34467207"
+      },
+      "total": {
+        "sum_vessels": "6862",
+        "sum_teu": "34467265"
+      },
+      "types": {
+        "transatlantic": 155505,
+        "transpacific": 611357,
+        "europe": 561871
+      }
+    }
+  }
+]

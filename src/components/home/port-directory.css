@@ -1,0 +1,31 @@
+.port-catalog-summary {display:flex;justify-content:space-between;align-items:center;gap:16px;margin:4px 0 18px;color:var(--muted-foreground);font-size:12px;}
+.port-catalog-summary strong {color:var(--foreground);font-weight:600;}
+.port-catalog-availability {display:inline-flex;align-items:center;gap:7px;}
+.port-catalog-availability i {width:6px;height:6px;border-radius:50%;background:var(--ocean-link);}
+.port-catalog-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+.port-catalog-card {position:relative;display:flex;flex-direction:column;min-width:0;padding:23px;border:1px solid var(--border);border-radius:16px;background:var(--card);color:var(--foreground);}
+.port-catalog-card-top {display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:20px;}
+.port-catalog-symbol {display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;background:var(--muted);color:var(--muted-foreground);}
+.port-catalog-badge {padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:10px;font-weight:500;color:var(--muted-foreground);background:var(--muted);white-space:nowrap;}
+.port-catalog-code {display:flex;align-items:center;gap:9px;margin-bottom:7px;}
+.port-catalog-code strong {font-size:29px;font-weight:650;line-height:1.15;letter-spacing:-.025em;}
+.port-catalog-code>span {padding:3px 6px;border-radius:4px;background:var(--muted);color:var(--muted-foreground);font-size:9px;font-weight:550;letter-spacing:.02em;}
+.port-catalog-card h3 {font-size:15px;font-weight:550;line-height:1.6;}
+.port-catalog-location {display:flex;align-items:center;flex-wrap:wrap;gap:5px;margin:11px 0 22px;color:var(--muted-foreground);font-size:11px;line-height:1.6;}
+.port-catalog-location svg {flex-shrink:0;}
+.port-catalog-location>span {color:var(--ocean-subtle);}
+.port-catalog-card-footer {display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:15px;margin-top:auto;border-top:1px solid var(--border);color:var(--muted-foreground);font-size:10px;line-height:1.6;}
+.port-catalog-card-footer>svg {flex-shrink:0;opacity:.7;}
+.port-catalog-cta {display:inline-flex;align-items:center;gap:4px;white-space:nowrap;font-size:11px;font-weight:600;color:var(--ocean-link);}
+.port-catalog-card.is-available {border-color:color-mix(in srgb,var(--ocean-link) 55%,var(--border));background:linear-gradient(145deg,color-mix(in srgb,var(--ocean-link) 9%,var(--card)),var(--card) 75%);box-shadow:0 0 0 1px color-mix(in srgb,var(--ocean-link) 8%,transparent),0 8px 28px color-mix(in srgb,var(--ocean-link) 9%,transparent);transition:transform .2s,border-color .2s,box-shadow .2s;}
+.port-catalog-card.is-available .port-catalog-symbol {color:var(--ocean-link);background:color-mix(in srgb,var(--ocean-link) 12%,var(--card));}
+.port-catalog-card.is-available .port-catalog-code strong {color:var(--ocean-link);}
+.port-catalog-badge.is-ready {color:var(--ocean-link);border-color:color-mix(in srgb,var(--ocean-link) 22%,var(--border));background:color-mix(in srgb,var(--ocean-link) 8%,var(--card));}
+.port-catalog-card.is-available:hover {transform:translateY(-3px);border-color:var(--ocean-link);box-shadow:0 8px 32px color-mix(in srgb,var(--ocean-link) 16%,transparent);}
+.port-catalog-card.is-available:focus-visible {outline:2px solid var(--ring);outline-offset:4px;}
+.port-catalog-card.is-selected {border-color:var(--ocean-link);}
+.port-catalog-empty {display:flex;flex-direction:column;align-items:center;gap:14px;padding:60px 24px;border:1px dashed var(--border);border-radius:16px;color:var(--muted-foreground);font-size:13px;}
+@media(min-width:1280px) {.port-catalog-grid {grid-template-columns:repeat(4,minmax(0,1fr));}.port-catalog-card {padding:20px;}}
+@media(max-width:850px) {.port-catalog-grid {grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:560px) {.port-catalog-grid {grid-template-columns:1fr;gap:12px;}.port-catalog-card {padding:20px;}.port-catalog-card-top {margin-bottom:16px;}.port-catalog-summary {align-items:flex-start;font-size:11px;gap:10px;}.port-catalog-code strong {font-size:27px;}}
+@media(prefers-reduced-motion:reduce) {.port-catalog-card.is-available {transition:none;}.port-catalog-card.is-available:hover {transform:none;}}

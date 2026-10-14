@@ -1,0 +1,11 @@
+import {beforeEach,it,expect,vi} from 'vitest';
+const mock=vi.hoisted(()=>({admin:vi.fn(),save:vi.fn(),refresh:vi.fn()}));
+vi.mock('../src/lib/auth/admin',()=>({requireAdmin:mock.admin}));
+vi.mock('../src/lib/php/jobs',()=>({savePhpConfig:mock.save}));
+vi.mock('next/cache',()=>({revalidatePath:mock.refresh}));
+import {updatePhpConfig} from '../src/lib/php/actions';
+const form=()=>{const f=new FormData();f.set('enabled','on');f.set('intervalDays','1');f.set('runHour','0');f.set('sourceUrl','https://cangvuhaiphong.gov.vn/ke-hoach-tau/');f.set('revision','1');return f;};
+beforeEach(()=>{vi.clearAllMocks();mock.admin.mockResolvedValue({id:'trusted-admin'});mock.save.mockResolvedValue(undefined);});
+it('requires admin authorization for PHP config writes',async()=>{mock.admin.mockRejectedValue(Error('forbidden'));await expect(updatePhpConfig({ok:false,message:''},form())).rejects.toThrow('forbidden');expect(mock.save).not.toHaveBeenCalled();});
+it('rejects unsupported sources and incompatible Hobby schedules before writing',async()=>{for(const [key,value] of [['sourceUrl','http://localhost'],['runHour','12'],['intervalDays','0']]){const f=form();f.set(key,value);expect((await updatePhpConfig({ok:false,message:''},f)).ok).toBe(false);}expect(mock.save).not.toHaveBeenCalled();});
+it('saves configuration using the authenticated admin identity',async()=>{const f=form();f.set('userId','untrusted');expect((await updatePhpConfig({ok:false,message:''},f)).ok).toBe(true);expect(mock.save).toHaveBeenCalledWith({enabled:true,intervalDays:1,runHour:0,sourceUrl:'https://cangvuhaiphong.gov.vn/ke-hoach-tau/'},'trusted-admin',1);});
