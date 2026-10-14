@@ -1,6 +1,7 @@
 'use client';
 import {useMapContext} from 'react-simple-maps';
 import type {getMapLocations} from '@/lib/ports/domain';
+import {svgNumber} from '@/lib/ports/svg';
 
 // Illustration anchors, not vessel positions or navigable shipping routes.
 // Stable seeded offsets scatter the ships without hydration jumps or rerender drift.
@@ -38,7 +39,7 @@ export function MapTraffic({points,animated=false}:{points:ReturnType<typeof get
    if(!ship||!target)return null;
    const bendX=(ship[0]+target[0])/2+offset(route.id+'curve')*55;
    const bendY=(ship[1]+target[1])/2-35;
-   const path=`M ${ship[0]} ${ship[1]} Q ${bendX} ${bendY} ${target[0]} ${target[1]}`;
+   const path=`M ${svgNumber(ship[0])} ${svgNumber(ship[1])} Q ${svgNumber(bendX)} ${svgNumber(bendY)} ${svgNumber(target[0])} ${svgNumber(target[1])}`;
    const style={'--traffic-color':route.color,'--traffic-duration':route.duration,'--traffic-delay':route.delay} as import('react').CSSProperties;
    return <g key={route.id} style={style} color={route.color}>
     <path className="map-route-glow" d={path} fill="none" stroke={route.color}/>
@@ -47,7 +48,7 @@ export function MapTraffic({points,animated=false}:{points:ReturnType<typeof get
     {animated&&[0,1].map(index=><circle key={index} className="map-route-particle" r={index?2:3} fill={route.color}>
      <animateMotion path={path} dur={route.duration} begin={index?'0s':`-${parseFloat(route.duration)/2}s`} repeatCount="indefinite" calcMode="paced"/>
     </circle>)}
-    <g transform={`translate(${ship[0]},${ship[1]})`}>
+    <g transform={`translate(${svgNumber(ship[0])},${svgNumber(ship[1])})`}>
      <g className="map-ship-float"><g transform={`rotate(${route.angle}) scale(${route.scale})`}><OutlineShip/></g></g>
     </g>
    </g>;

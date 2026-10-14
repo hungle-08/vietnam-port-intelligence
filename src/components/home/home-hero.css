@@ -1,0 +1,12 @@
+/* Introduction 40%, map 60%, with a stacked layout on small screens. */
+.port-site .home-hero {display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);align-items:center;gap:48px;padding:42px 0 50px;}
+.home-hero .hero-copy {min-width:0;width:100%;max-width:none;text-align:left;}
+.home-hero .hero-intro {margin:0;}
+.home-hero .hero-description {margin:12px 0 0;}
+.home-hero .port-map>svg {height:auto;aspect-ratio:920/1020;}
+@media(max-width:800px) {
+ .port-site .home-hero {grid-template-columns:minmax(0,1fr);gap:24px;padding:34px 0;}
+ .home-hero .hero-copy {max-width:600px;margin-inline:auto;text-align:center;}
+ .home-hero .hero-intro {margin-inline:auto;}
+ .home-hero .hero-description {margin:12px auto 0;}
+}

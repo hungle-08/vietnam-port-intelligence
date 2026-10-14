@@ -1,6 +1,7 @@
 'use client';
 import {useState,useEffect,useRef,useId} from 'react';
-import {ComposableMap,Geographies,Geography,Marker,useMapContext} from 'react-simple-maps';
+import {ComposableMap,Geographies,Geography,useMapContext} from 'react-simple-maps';
+import {svgNumber} from '@/lib/ports/svg';
 import {motion,useReducedMotion,useInView} from 'motion/react';
 import {X} from 'lucide-react';
 import {Button} from '@/components/ui/button';
@@ -12,6 +13,10 @@ import {PortDetails} from './port-details';
 import {MapTraffic} from './map-traffic';
 
 type MapPoint=ReturnType<typeof getMapLocations>[number];
+function Marker({coordinates,children,...props}:{coordinates:[number,number]}&React.SVGProps<SVGGElement>){
+ const {projection}=useMapContext(),point=projection(coordinates);
+ return point?<g className="rsm-marker" transform={`translate(${svgNumber(point[0])},${svgNumber(point[1])})`} {...props}>{children}</g>:null;
+}
 // Regular five-point star, placed within the broad northern part of the silhouette.
 const flagStar=Array.from({length:10},(_,i)=>{
  const angle=-Math.PI/2+i*Math.PI/5;
@@ -66,7 +71,7 @@ export function PortMap({ports,locale,selectedId,onSelect}:{ports:PortRecord[];l
      <Geography className="map-land-scan" geography={geo} fill={`url(#${id}-scan)`} stroke="none" pointerEvents="none"/>
     </g>)}</Geographies>
     {archipelagos.map(a=><g key={a.id} aria-label={a.name}>
-     {a.points.map(p=><Marker key={p.name} coordinates={p.coordinates}><title>{p.name} · {a.name}</title><circle className="map-island-point" r={2.6} fill="#da251d" stroke="#ffde00" strokeWidth={.8}/></Marker>)}
+     {a.points.map(p=><Marker key={p.name} coordinates={p.coordinates}><title>{`${p.name} · ${a.name}`}</title><circle className="map-island-point" r={2.6} fill="#da251d" stroke="#ffde00" strokeWidth={.8}/></Marker>)}
      <Marker coordinates={a.label}><text textAnchor="middle" fontSize={12} fontWeight={550} fill="var(--foreground)">{a.name}</text><text textAnchor="middle" y={14} fontSize={8} fill="var(--muted-foreground)">{locale==='vi'?'Quần đảo':'Archipelago'}</text></Marker>
     </g>)}
     <MapTraffic points={points} animated={!reduce&&inView}/>

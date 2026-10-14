@@ -10,7 +10,7 @@ export function portName(
 }
 const vi = {
   shippingEyebrow: "HÃNG TÀU CONTAINER TOÀN CẦU",
-  shippingTitle: "10 hãng tàu lớn nhất thế giới",
+  shippingTitle: "10 hãng tàu container lớn nhất",
   shippingIntro: "Xếp hạng theo tổng sức chở đội tàu container đang khai thác, bao gồm tàu sở hữu và tàu thuê.",
   shippingAsOf: "Dữ liệu ngày", shippingCarrier: "Hãng tàu", shippingShare: "Tỷ trọng sức chở toàn cầu", shippingShips: "tàu",
   shippingDefinition: "TEU là đơn vị tương đương container 20 feet. Tỷ trọng phản ánh sức chở đội tàu toàn cầu, không phải sản lượng hàng hóa hoặc thị phần tại cảng Việt Nam.",
@@ -18,11 +18,11 @@ const vi = {
 
   home: "Trang chủ",
   directory: "Danh mục cảng",
-  eyebrow: "CẢNG BIỂN VIỆT NAM",
-  heading: "Theo dõi cảng Việt Nam",
-  intro: "",
+  eyebrow: "CẢNG BIỂN & THƯƠNG MẠI",
+  heading: "Theo dõi dữ liệu cảng Việt Nam",
+  intro: "Hoạt động cảng và thương mại Việt Nam, từ dữ liệu chính thống.",
   introDetail:
-    "Tra cứu vị trí, khu vực và đơn vị khai thác trên bản đồ. Dữ liệu sản lượng, thị phần và lịch sử theo ngày, tháng, năm sẽ được bổ sung từ các nguồn chính thống, giúp đối chiếu giữa các cảng và theo dõi biến động qua từng giai đoạn.",
+    "Tra cứu hệ thống cảng, xem kế hoạch tàu tại Hải Phòng và theo dõi xuất nhập khẩu Việt Nam. Dữ liệu được tổng hợp theo kỳ, kèm nguồn và phạm vi thống kê.",
   explore: "Khám phá các cảng",
   mapIntro: "Hệ thống cảng Việt Nam.",
   mapHint: "Di chuột hoặc chạm vào điểm cảng để khám phá.",
@@ -34,7 +34,7 @@ const vi = {
   north: "Miền Bắc",
   central: "Miền Trung",
   south: "Miền Nam",
-  directoryTitle: "Khám phá hệ thống cảng",
+  directoryTitle: "Hệ thống cảng Việt Nam",
   directoryIntro:
     "Tra cứu cảng, doanh nghiệp khai thác và mã cổ phiếu trong cùng một nơi.",
   search: "Tìm tên cảng, mã hoặc địa điểm…",
@@ -102,7 +102,7 @@ const vi = {
 };
 const en: typeof vi = {
   shippingEyebrow: "GLOBAL CONTAINER CARRIERS",
-  shippingTitle: "The world’s 10 largest shipping lines",
+  shippingTitle: "Top 10 container shipping lines",
   shippingIntro: "Ranked by operated container fleet capacity, including owned and chartered vessels.",
   shippingAsOf: "Data as of", shippingCarrier: "Carrier", shippingShare: "Global capacity share", shippingShips: "vessels",
   shippingDefinition: "TEU means twenty-foot equivalent unit. Shares reflect global fleet capacity, not cargo throughput or market share at Vietnamese ports.",
@@ -110,11 +110,11 @@ const en: typeof vi = {
 
   home: "Home",
   directory: "Port directory",
-  eyebrow: "VIETNAM PORTS",
-  heading: "Track Vietnam’s ports",
-  intro: "",
+  eyebrow: "PORTS & TRADE",
+  heading: "Track Vietnam’s port data",
+  intro: "Vietnam’s ports and trade, through official data.",
   introDetail:
-    "Explore locations, regions and operators on the map. Throughput, market share and historical data by day, month and year will be added from official sources to support comparisons between ports and tracking changes over time.",
+    "Explore the port network, review vessel plans in Hai Phong and follow Vietnam’s imports and exports. Period-based reports include their sources and statistical scope.",
   explore: "Explore ports",
   mapIntro: "Vietnam’s port network.",
   mapHint: "Hover or tap a port to explore.",
@@ -126,7 +126,7 @@ const en: typeof vi = {
   north: "Northern Vietnam",
   central: "Central Vietnam",
   south: "Southern Vietnam",
-  directoryTitle: "Explore the port network",
+  directoryTitle: "Vietnam’s port network",
   directoryIntro: "Explore ports, operators and stock tickers in one place.",
   search: "Search port, code or location…",
   searchLabel: "Search ports",

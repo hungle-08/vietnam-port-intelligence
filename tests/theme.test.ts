@@ -12,20 +12,21 @@ it('shared theme variables resolve without cyclic references',()=>{
 
 import {runInNewContext} from 'node:vm';
 import {THEME_BOOTSTRAP,readSavedTheme,saveTheme} from '../src/lib/theme';
-it('defaults to light even when storage is missing, invalid or blocked',()=>{
- expect(readSavedTheme({getItem:()=>null})).toBe('light');
- expect(readSavedTheme({getItem:()=> 'system'})).toBe('light');
- expect(readSavedTheme({getItem:()=>{throw Error('blocked');}})).toBe('light');
+it('defaults to dark when storage is missing, invalid or blocked, and preserves explicit light',()=>{
+ expect(readSavedTheme({getItem:()=>null})).toBe('dark');
+ expect(readSavedTheme({getItem:()=> 'system'})).toBe('dark');
+ expect(readSavedTheme({getItem:()=>{throw Error('blocked');}})).toBe('dark');
+ expect(readSavedTheme({getItem:()=> 'light'})).toBe('light');
  expect(readSavedTheme({getItem:()=> 'dark'})).toBe('dark');
 });
 it('persists explicit choices and remains usable with blocked storage',()=>{
  let saved='';saveTheme('dark',{setItem:(_key,value)=>{saved=value;}});expect(saved).toBe('dark');
  expect(()=>saveTheme('light',{setItem:()=>{throw Error('blocked');}})).not.toThrow();
 });
-it('applies a saved theme before rendering with light as the first-visit default',()=>{
+it('applies a saved theme before rendering with dark as the first-visit default',()=>{
  for(const preference of [null,'light','dark','invalid']){
   let dark=true;
   runInNewContext(THEME_BOOTSTRAP,{localStorage:{getItem:()=>preference},document:{documentElement:{classList:{toggle:(_name:string,enabled:boolean)=>{dark=enabled;}}}}});
-  expect(dark).toBe(preference==='dark');
+  expect(dark).toBe(preference!=='light');
  }
 });

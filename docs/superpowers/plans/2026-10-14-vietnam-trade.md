@@ -1,0 +1,14 @@
+# Vietnam merchandise trade implementation
+
+Approved scope: monthly official imports/exports, normalized before Neon storage; two trend lines, balance bars, month/quarter/year selection on home. Follow the existing Next server data, admin and daily cron patterns.
+
+- [x] Test Excel parsing (units, month columns, totals, missing/mismatched periods), safe source discovery, and period aggregation before implementation.
+- [x] Add minimal monthly table and source provenance. No raw workbook, commodity detail, derived totals or percentages in DB. Atomic, idempotent upserts; reject incomplete/malformed source pairs; never erase good data on failure.
+- [x] Backfill 2024–2026 from official Excel only. Report September separately remains outside the canonical series until Excel publishes it, to avoid mixing revision vintages. Future/unknown months remain null.
+- [x] Implement bounded source collection, previous/current year monthly refresh on day 25 at 08:00 Vietnam, lease ownership, authenticated cron, admin configuration and status. User changed daily checks to once per month during implementation. New source URLs require a compatible parser; do not fetch arbitrary admin URLs.
+- [x] Add responsive VI/EN home chart: 12 months, 8 quarters or 5 calendar years per history window, chronological left to right. Latest window ends at the current period. Previous/next move one nonoverlapping window, latest resets to page 0, mode changes reset to latest. Disable previous if no older data exists, disable next/latest on page 0. Annual view renders only available years within each fixed 5-year range. Summary totals use all displayed periods and disclose coverage. Visible legend, accessible per-period tooltip, honest partial-period labels and matched-period YoY.
+- [x] Apply migration, verify saved records against source and repeated imports, run tests/lint/build, and inspect desktop/mobile/light/dark UI.
+
+Data: one row per calendar month, exports/imports in USD numeric(20,2), source release reference and update timestamp. Source release retains hashes, year and three official URLs, retrieval timestamp and preliminary status. Quarterly/annual sums and balance computed from monthly data. All merchandise trade, not port tonnage/DWT/TEU. Values use exports FOB/imports CIF as published.
+
+Verification: 32 source-matched Neon rows, three active source releases, repeated sync unchanged. Monthly schedule persisted as interval_months=1, day_of_month=25, next run 2026-10-25T01:00Z. Authorized endpoint skips before due time and rejects invalid credentials. 128 tests, lint and production build pass. Desktop history navigation, annual totals and 390px mobile inspected. Existing map SSR hydration warning observed in PortMap archipelago SVG titles, unrelated to trade chart. Code has not been pushed or deployed.
