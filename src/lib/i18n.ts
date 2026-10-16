@@ -14,7 +14,7 @@ const vi = {
   shippingIntro: "Xếp hạng theo tổng sức chở đội tàu container đang khai thác, bao gồm tàu sở hữu và tàu thuê.",
   shippingAsOf: "Dữ liệu ngày", shippingCarrier: "Hãng tàu", shippingShare: "Tỷ trọng sức chở toàn cầu", shippingShips: "tàu",
   shippingDefinition: "TEU là đơn vị tương đương container 20 feet. Tỷ trọng phản ánh sức chở đội tàu toàn cầu, không phải sản lượng hàng hóa hoặc thị phần tại cảng Việt Nam.",
-  shippingScope: "Số liệu hợp nhất theo hãng / tập đoàn", shippingSaved: "Bản dữ liệu đã lưu",
+  shippingScope: "Số liệu hợp nhất theo hãng / tập đoàn",
 
   home: "Trang chủ",
   directory: "Danh mục cảng",
@@ -106,7 +106,7 @@ const en: typeof vi = {
   shippingIntro: "Ranked by operated container fleet capacity, including owned and chartered vessels.",
   shippingAsOf: "Data as of", shippingCarrier: "Carrier", shippingShare: "Global capacity share", shippingShips: "vessels",
   shippingDefinition: "TEU means twenty-foot equivalent unit. Shares reflect global fleet capacity, not cargo throughput or market share at Vietnamese ports.",
-  shippingScope: "Consolidated carrier / group figures", shippingSaved: "Saved data snapshot",
+  shippingScope: "Consolidated carrier / group figures",
 
   home: "Home",
   directory: "Port directory",

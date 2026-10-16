@@ -102,18 +102,11 @@ npm run db:check
 
 ### Top 10 hãng tàu container
 
-Home hiển thị bảng xếp hạng theo sức chở đội tàu đang khai thác (TEU), số tàu và tỷ trọng sức chở toàn cầu. Nguồn Alphaliner, dữ liệu chốt ngày 12/10/2026; số liệu hợp nhất theo hãng/tập đoàn, không phải thị phần ở cảng Việt Nam. Dữ liệu đọc từ Neon; nếu chưa lấy được bản DB, giao diện ghi rõ đang dùng bản dữ liệu đã lưu có ngày và nguồn, không giả lập số liệu.
+Mỗi lần mở Home, trình duyệt gọi `GET /api/shipping-lines`; Next.js gọi trực tiếp Alphaliner TOP 100 (`getTop100Table`, `getTextCalculations`) và trả về 10 hãng theo sức chở đội tàu đang khai thác. Giữ nguyên chart, logo, TEU, số tàu và tỷ trọng toàn cầu. Ngày hiển thị là ngày thu thập theo giờ Việt Nam, không suy đoán ngày chốt của nguồn.
 
-```bash
-npm run shipping:collect -- --input data/sources/alphaliner-2026-10-12.txt
-npm run db:migrate
-npm run shipping:seed
-npm run shipping:verify
-```
+Cả request nguồn và response đều `no-store`, không đọc/ghi Neon hoặc snapshot cục bộ, không cron. Phần này tải độc lập với Home; khi nguồn lỗi sẽ có thông báo và nút thử lại. Giới hạn nguồn cố định, timeout 20 giây, tối đa 2 MB, từ chối redirect và kiểm tra đủ/thống nhất 10 hãng trước khi render.
 
-`shipping:collect` không có `--input` sẽ thử tải nguồn công khai trực tiếp với timeout. Import chỉ thành công khi có ngày chốt cùng bảng tỷ trọng và bảng đội tàu đầy đủ, nhất quán. Nguồn hiện tại được trích từ kết quả web index do HTTP trực tiếp lỗi DNS; xem provenance trong `data/shipping-lines.json` và `data/sources/alphaliner-2026-10-12.txt`. Lịch tự động được cấu hình trong phần Monthly shipping data cron bên dưới.
-
-`shipping_carriers` giữ ID ổn định, `shipping_fleet_snapshots` và `shipping_fleet_rankings` giữ lịch sử theo ngày và hash nội dung. Import lại không nhân bản snapshot. `shipping_carrier_port_links` là bảng liên kết có nguồn/ngày hiệu lực, hiện chưa có quan hệ suy đoán. Khi cần nhập bằng công cụ SQL: `npm run shipping:seed -- --export` tạo `data/shipping-lines-import.sql`.
+Migration `0016_disable_shipping_cron.sql` tắt cấu hình cũ; endpoint cron, script lưu dữ liệu và cấu hình admin hãng tàu đã gỡ. Các bảng lịch sử cũ được giữ nguyên, không còn được sử dụng bởi tính năng này.
 
 ### Optional accounts
 
@@ -135,33 +128,15 @@ Light mode is the default. The Light/Dark toggle in the Home and account headers
 
 Migration `0005_account_roles.sql` gives existing and new public accounts the default role `user`. Public registration never accepts a role. Administrators can be provisioned with `npx tsx scripts/seed-admin.ts`, supplying a JSON object containing `name`, `email` and `password` through stdin. The script hashes the supplied password, upserts that explicit account as admin and revokes its previous sessions atomically. Credentials are not saved in source code or logs. This trusted provisioning path accepts a deliberately supplied short password; the public registration password policy remains unchanged.
 
-### Monthly shipping data cron
-
-`/admin` now includes the Top 10 shipping lines configuration: enabled status, interval (1–12 months), day (1–28), supported Alphaliner source URL, next due date and recent run history. Configuration is stored in `admin_job_configs`, with server-side admin authorization and optimistic revision checks. `admin_job_runs` records outcomes. Changing a schedule resets the next occurrence; saving an unchanged schedule preserves it.
-
-`vercel.json` invokes `GET /api/cron/shipping-lines` daily at 00:00 UTC (around 07:00 Vietnam; Vercel timing is approximate). The handler checks the DB schedule and performs collection only when due. Default: day 1 every month. This daily check allows admin changes without redeployment and retries failed collection on the next day. A five-minute database lease prevents overlapping collection; successful completion atomically saves a complete snapshot and advances the schedule. Failures keep the previous good snapshot.
-
-Set `DATABASE_URL` and `CRON_SECRET` in Vercel Production environment variables, then deploy Production. The same secret goes in ignored `.env.local`; never expose it through `NEXT_PUBLIC_` variables. Cron is not scheduled by localhost. The route rejects requests without matching bearer authorization. After deployment inspect Vercel Settings → Cron Jobs and its invocation logs.
-
-Only the Alphaliner TOP 100 page and its public `rooter.php` URL are supported. Both use the same public JSON methods used by the source webpage (`getTop100Table`, `getTextCalculations`). Fetching is bounded to 20 seconds/2 MB and refuses redirects. An unknown top-ten carrier, changed source format or inconsistent ranking is rejected; adding a different provider requires its own verified adapter. Public ranking dates are generated in the visitor's browser, so automatic snapshots explicitly display **collection date**, not an asserted source publication date.
-
-Integration verification uses only the dedicated Neon development branch, briefly exercises due/failed/unchanged/edited configurations, then restores the original schedule. It retains development test run history and validated snapshots:
-
-```bash
-DB_ENV_FILE=.env.neon-dev NODE_OPTIONS=--conditions=react-server npx tsx scripts/verify-shipping-cron.ts
-```
-
-Use `--fixture` on the integration command to verify database behavior with the captured public response when the source is temporarily unreachable. This does not assert a fresh network collection.
-
 ### PHP: kế hoạch tàu và DWT theo ngày
 
 Đã lưu 5 điểm khai thác liên quan PHP: Tân Vũ, Hoàng Diệu, Chùa Vẽ (phạm vi trực tiếp); HTIT bến 3–4 Lạch Huyện và Đình Vũ/DVP (phạm vi hệ thống, quan hệ vốn 51%). Membership lưu nguồn, ngày chứng cứ và ngày hiệu lực; phân loại khởi đầu 2026 dựa trên hồ sơ cuối năm 2025, cần cập nhật khi quan hệ thay đổi. DVP dùng chung một thực thể Đình Vũ, không sao chép dữ liệu tàu. Không nhân DWT với tỷ lệ sở hữu.
 
 Nguồn: [kế hoạch tàu Cảng vụ Hải Phòng](https://cangvuhaiphong.gov.vn/ke-hoach-tau/), đọc trang nhúng công khai `csdltau.cangvuhaiphong.gov.vn/pages/ship_plan.aspx`. URL chỉ đổi được giữa hai địa chỉ hỗ trợ; nguồn mới cần bộ đọc riêng. Truy vấn dùng ngày Việt Nam, kiểm tra ngày trong nội dung, đủ các mục/tiêu đề cột, timeout và giới hạn dung lượng.
 
-**DWT tàu vào theo kế hoạch** là tổng trọng tải thiết kế tàu trên các lượt vào cảng trong kế hoạch. Đây không phải tấn hàng qua cảng hay xác nhận tàu đã thực sự cập cảng. Chỉ lưu tàu vào có nơi đến thuộc 5 cảng PHP và tàu rời có nơi đi thuộc 5 cảng PHP. Tàu rời không cộng vào chỉ số DWT tàu vào; lượt chuyển cảng, qua luồng và các cảng khác bị loại trước khi lưu. Không có IMO/ID lượt tàu ổn định từ nguồn; khóa nội bộ dựa trên ngày, loại di chuyển, giờ, tên tàu và nơi đi/đến. Chưa ghép lượt vào/rời thành chuyến thực tế. DWT thiếu giữ `null`, đi kèm số lượt thiếu. Ngày chưa lấy được trả về `available=false`, không hiển thị như ngày có giá trị 0.
+**DWT tàu vào theo kế hoạch** là tổng trọng tải thiết kế tàu trên các lượt vào cảng trong kế hoạch. Đây không phải tấn hàng qua cảng hay xác nhận tàu đã thực sự cập cảng. Lưu toàn bộ kế hoạch tàu của Cảng vụ Hải Phòng, gồm vào, rời, chuyển cảng và qua luồng của mọi cảng. Báo cáo PHP chỉ tính lượt vào có nơi đến thuộc đúng 5 cảng thành viên theo bảng quan hệ sở hữu, không cộng lượt rời/chuyển/qua luồng hoặc cảng ngoài PHP vào tổng DWT PHP. Không có IMO/ID lượt tàu ổn định từ nguồn; khóa nội bộ dựa trên ngày, loại di chuyển, giờ, tên tàu và nơi đi/đến. Chưa ghép lượt vào/rời thành chuyến thực tế. DWT thiếu giữ `null`, đi kèm số lượt thiếu. Ngày chưa lấy được trả về `available=false`, không hiển thị như ngày có giá trị 0.
 
-Snapshot ngày bất biến giữ bản trích xuất các dòng nguồn thuộc PHP và dữ liệu đã đọc, không giữ toàn bộ HTML kế hoạch Hải Phòng. Chỉ snapshot hợp lệ mới nhất được dùng để tổng hợp; chạy lại không cộng trùng. Dòng lặp cùng khóa và cùng DWT/GT/LOA chỉ tính một lượt; khác thông tin phụ được lưu trong `supplementalVariants`, giá trị phụ xung đột không được khẳng định. Xung đột trọng tải bị từ chối để giữ snapshot tốt trước đó. Mục qua luồng tồn tại nhưng trống được chấp nhận là không có lượt; mất mục hoặc đổi cấu trúc bị từ chối.
+Snapshot ngày bất biến giữ HTML toàn bộ kế hoạch Hải Phòng và dữ liệu đã đọc của cả 4 loại di chuyển. Chỉ snapshot hợp lệ mới nhất được dùng để tổng hợp; chạy lại không cộng trùng. Dòng lặp cùng khóa và cùng DWT/GT/LOA chỉ tính một lượt; khác thông tin phụ được lưu trong `supplementalVariants`, giá trị phụ xung đột không được khẳng định. Xung đột trọng tải bị từ chối để giữ snapshot tốt trước đó. Mục qua luồng tồn tại nhưng trống được chấp nhận là không có lượt; mất mục hoặc đổi cấu trúc bị từ chối.
 
 Production đã đối chiếu đủ **286 ngày (01/01–13/10/2026)**, 3.419 lượt vào/rời 5 cảng PHP (1.700 lượt vào, 1.719 lượt rời), sau khi dọn 20.875 lượt ngoài phạm vi theo yêu cầu ngày 14/10/2026. Trong phạm vi hệ thống PHP có 1.700 lượt vào theo kế hoạch, tổng 38.929.781 DWT, không có lượt thiếu DWT trong tập này. Đây là kết quả backfill ngày 13/10/2026, có thể thay đổi khi nguồn sửa kế hoạch.
 
@@ -191,8 +166,40 @@ Trang đọc 5 cảng trong hệ thống PHP từ Neon, phân nhóm trực thu�
 
 Đối chiếu tổng tháng với view trong Neon bằng truy vấn chỉ đọc: `npm run php:verify-report`. Trạng thái tổng hợp phản ánh độ phủ kế hoạch, không xác nhận hoạt động tàu thực tế. Không có migration hay thay đổi dữ liệu ở bước làm trang chi tiết.
 
-### Giới hạn lưu dữ liệu kế hoạch PHP
+### Lưu toàn bộ kế hoạch tàu Hải Phòng
 
-Bộ đọc nguồn và `savePhpDay` đều áp dụng whitelist đúng 5 cảng, theo chiều đi/đến. `0009_php_event_scope.sql` chặn lượt ngoài phạm vi ở cấp DB, bao gồm terminal NULL. `raw_html` là HTML chứa bản trích xuất dòng dữ liệu PHP, không phải toàn trang nguồn; thông tin đối tác nơi đi/đến của chính lượt PHP vẫn được giữ để xác định lượt tàu. Không lưu lượt chuyển cảng/qua luồng trong bộ dữ liệu này.
+Migration `0015_haiphong_regional_storage.sql` gỡ ràng buộc PHP-only của migration 0009. Crawler hằng ngày (07:00 Việt Nam) và backfill dùng `parseHaiphongPlan` để lưu toàn bộ lượt vào/rời/chuyển cảng/qua luồng cùng HTML nguồn. Tên nơi đi/đến luôn giữ nguyên, kể cả cảng chưa có mã nội bộ (`fromTerminal`/`toTerminal` có thể null).
 
-`npm run php:scope-history` chỉ đọc và báo số liệu dự kiến. Sau khi có chấp thuận dọn dữ liệu, `npm run php:scope-history -- --apply` sao lưu snapshot, dòng tàu, pointer, coverage và metrics vào `.backups/` (bỏ qua bởi Git), rồi thay thế lịch sử theo phạm vi PHP trong một transaction. Lịch sử được chụp theo batch để tránh giới hạn response Neon. Fingerprint kiểm tra dữ liệu không đổi trong lúc chuẩn bị; nếu dữ liệu thay đổi hoặc metrics/coverage không khớp, transaction hủy và cần chạy lại. Chạy dọn trước khi áp dụng migration 0009 trên DB còn dữ liệu ngoài phạm vi. Sau khi dọn, các snapshot mới tiếp tục bất biến và giữ revision theo dữ liệu PHP.
+View `issuer_daily_planned_dwt` vẫn chỉ tính lượt vào qua quan hệ `issuer_terminal_memberships`. Các truy vấn detail PHP đều lọc `ticker='PHP'` nên chỉ 5 cảng PHP được tổng hợp. Snapshot scoped cũ được giữ làm lịch sử nhưng không cộng trùng vì báo cáo chỉ đọc snapshot active của mỗi ngày.
+
+`npm run haiphong:restore` kiểm tra checksum bản sao lưu gốc, tạo bản sao trạng thái hiện tại vào `.backups/` và đối chiếu DWT/lượt vào PHP từng ngày/từng cảng. Thêm `-- --apply` để khôi phục 286 ngày 01/01–13/10/2026 bằng bản sao lưu gốc trên máy này, sau khi áp dụng migration 0015. Script kiểm tra pointer không bị thay đổi trong lúc chạy, lưu mỗi ngày trong transaction và không xóa revision đang có. Script dọn PHP-only cũ đã bị vô hiệu hóa vì không còn phù hợp phạm vi lưu trữ.
+
+Đã khôi phục và bổ sung trên Neon đủ 289 ngày từ 01/01 đến 16/10/2026, gồm 24.575 bản ghi kế hoạch active. Số liệu PHP đến 15/10 không đổi. Khi cào lại ngày 16/10, nguồn có thêm 1 lượt vào Chùa Vẽ (8.721 DWT); tổng PHP hiện tại là 39.311.239 DWT / 1.719 lượt vào.
+
+Dữ liệu ngày 14–16/10/2026 được cào lại toàn vùng. Những lần bổ sung sau dùng `npm run php:backfill -- --from YYYY-MM-DD --to YYYY-MM-DD --refresh` để thay snapshot active bằng bản nguồn hợp lệ mới nhất. Nếu nguồn thay đổi, số liệu mới có thể thay đổi theo kế hoạch cập nhật; lỗi nguồn giữ bản tốt trước đó.
+
+### Xuất nhập khẩu hàng hóa
+
+Home gọi REST API chính thức của [Dữ Liệu Kinh Tế](https://console.dulieukinhte.com/huong-dan) ở server, rồi render một biểu đồ gồm 3 đường: xuất khẩu, nhập khẩu và cán cân thương mại. Hai chuỗi tháng `22603`/`22606` được lấy chung qua `/v1/series/observations?ids=22603,22606&limit=500`. Đơn vị gốc triệu USD được chuẩn hóa thành USD, UI hiển thị tỷ USD. Cán cân = xuất khẩu − nhập khẩu, chỉ tính khi đủ cả hai chiều cùng tháng.
+
+Đặt `DLKT_API_KEY` trong `.env.local` (đã bỏ qua Git) và Environment Variables trên Vercel cho các môi trường cần dùng, sau đó deploy lại. Khóa chỉ gửi bằng header Authorization tới domain API cố định, không đưa vào browser, query string, log hay biến `NEXT_PUBLIC_`.
+
+Request dùng Next.js Data Cache (`force-cache`, revalidate 24 giờ), chia sẻ giữa VI/EN và mọi bộ lọc để giảm lượt gọi. Không gọi API riêng mỗi lần hover/chuyển kỳ. Lưu ý: cache có thể bị xóa hoặc bỏ qua trong dev khi hard reload, nên đây không phải cam kết số request tối đa. Khi API lỗi/hết hạn mức, trang vẫn hoạt động và hiển thị trạng thái chưa tải được dữ liệu cùng liên kết nguồn.
+
+Chart dùng Apache ECharts, nạp riêng ở client với các module line, tooltip và dataZoom. Có chọn khoảng 1/2/3/5/10 năm hoặc toàn bộ lịch sử, chọn năm dương lịch cụ thể, zoom bằng wheel/trackpad/pinch, kéo dịch thời gian, thanh navigator, nút zoom/đặt lại, bật tắt từng đường và khung phóng lớn (Esc đóng). Không có tính năng tải ảnh. Bộ chọn Từ kỳ/Đến kỳ dành cho bàn phím xuất hiện khi focus để thao tác khoảng thời gian mà không cần chuột.
+
+Mặc định tháng hiển thị 12 tháng tới tháng hiện tại; quý 8 quý; năm 5 năm gần nhất. Quý/năm chỉ cộng các tháng có đủ cả hai chiều và ghi rõ độ phủ. Khoảng thiếu không thay bằng 0 hoặc nối liền đường; không hiển thị kỳ tương lai. Mọi thao tác chart chỉ dùng dữ liệu đã tải, không gọi thêm API. Độ sâu lịch sử phụ thuộc gói API và khoảng chọn được giới hạn theo dữ liệu thực tế.
+
+Không lưu dữ liệu thương mại trong Neon, không có cron/admin config riêng. Migration `0014_retire_vietnam_trade.sql` đã xóa ba bảng của pipeline cũ, sau khi sao lưu vào `.backups/retired-trade-2026-10-16T04-02-47-872Z.json`. Các migration cũ vẫn được giữ để bảo toàn lịch sử/checksum. Deploy mới cũng gỡ endpoint và lịch cron cũ trên Vercel.
+
+### So sánh Lạch Huyện trong detail PHP
+
+Tab Tổng quan có chart tỷ trọng, mặc định cột chồng 100% và tùy chọn đường, thể hiện tỷ trọng DWT/lượt vào của HICT (bến 1–2), HTIT (bến 3–4) và HHIT (bến 5–6). Mặc định hiển thị tối đa 12 tháng gần nhất tới tháng hiện tại; cuộn hoặc kéo navigator để xem toàn bộ lịch sử, dừng tại tháng đầu tiên có dữ liệu, độc lập với bộ chọn năm báo cáo PHP. Chỉ đọc snapshot toàn vùng và lượt `arrival`; không gộp khu neo `LACH HUYEN 1/2`, không điều chỉnh theo sở hữu và không cộng lượt rời/chuyển/qua luồng. Không thay đổi danh mục 5 cảng của báo cáo PHP.
+
+Mẫu số luôn là tổng cả ba cảng, kể cả khi ẩn một đường. Tháng không có snapshot vùng giữ giá trị null, không nối đường qua khoảng thiếu. Tháng có snapshot nhưng không có lượt được ghi 0 lượt; tỷ trọng để trống nếu tổng bằng 0. Nếu có lượt thiếu DWT, tỷ trọng DWT để trống, vẫn xem được tỷ trọng lượt tàu. Tháng hiện tại và các tháng thiếu ngày ghi rõ độ phủ. Có chú thích tên/bến, chuyển chỉ số, cuộn chuột/trackpad để dịch khung thời gian, navigator, đặt lại 12 tháng gần nhất và bộ chọn tháng để xem số liệu bằng bàn phím. Không có migration hoặc cron mới; dùng dữ liệu kế hoạch Hải Phòng đã lưu.
+
+Chart Lạch Huyện phân biệt tháng hiện tại bằng cột vạch chéo/điểm hình thoi, dấu * trên nhãn tháng và thông báo tỷ trọng tạm tính. Độ phủ là số ngày có dữ liệu / tổng số ngày lịch của tháng (ví dụ 16/31); cột 100% chỉ thể hiện cơ cấu ba cảng.
+
+### Loading UI
+
+Spinner và Skeleton dùng component shadcn trong `src/components/ui`, thống nhất qua `src/components/loading`. Home, PHP detail, tài khoản và admin có fallback theo bố cục trang và route `loading.tsx`; chart giữ chiều cao trong lúc tải bundle. Hãng tàu và tin tức dùng skeleton theo từng hàng/card, logo và ảnh có placeholder đến khi tải xong hoặc chuyển fallback khi lỗi. Nút đăng nhập/đăng ký, đổi năm, tải tin và lưu cấu hình hiển thị Spinner, trạng thái busy và khóa thao tác lặp khi đang xử lý. Loading được dịch VI/EN, placeholder ẩn với trình đọc màn hình và animation tắt theo `prefers-reduced-motion`.

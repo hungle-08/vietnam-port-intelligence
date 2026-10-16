@@ -31,11 +31,11 @@
 .php-news-empty {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:260px;margin-top:22px;padding:32px 20px;border:1px dashed var(--border);border-radius:15px;text-align:center;color:var(--muted-foreground);}
 .php-news-empty h3 {font-size:17px;font-weight:550;color:var(--foreground);}.php-news-empty p {font-size:12px;line-height:1.8;}
 .php-news-loading>p {display:flex;align-items:center;gap:9px;font-size:12px;color:var(--muted-foreground);margin:22px 0;}
-.php-news-skeleton {padding-bottom:20px;overflow:hidden;border:1px solid var(--border);border-radius:15px;background:var(--card);}
-.php-news-skeleton>div {aspect-ratio:16/9;background:var(--muted);}.php-news-skeleton>span {display:block;height:12px;margin:18px 20px;background:var(--muted);border-radius:4px;}.php-news-skeleton>span:last-child {width:55%;}
+
+
 .php-news-provenance {margin-top:28px;padding-top:20px;border-top:1px solid var(--border);font-size:11px;color:var(--muted-foreground);line-height:1.9;}
 .php-news-provenance p:first-child {display:flex;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:8px;}.php-news-provenance a {display:inline-flex;align-items:center;gap:4px;color:var(--ocean-link);}
-.php-news .is-spinning {animation:php-news-spin 1.5s linear infinite;}@keyframes php-news-spin {to {transform:rotate(360deg);}}
+
 @media(max-width:900px) {.php-news-grid {grid-template-columns:repeat(2,minmax(0,1fr));}.php-news-toolbar {justify-content:flex-start;}.php-news-topics {order:3;width:100%;}.php-news-source {margin-left:auto;}}
 @media(max-width:560px) {.php-news-heading {align-items:flex-start;gap:12px;}.php-news-heading h2 {font-size:21px;}.php-news-refresh {padding:9px 10px;font-size:11px;}.php-news-toolbar {padding:15px;gap:14px;}.php-news-month,.php-news-source {min-width:0;flex:1;}.php-news-month-controls {flex-wrap:wrap;}.php-news-month select {min-width:0;}.php-news-source select {width:100%;}.php-news-topics {width:100%;flex-wrap:nowrap;}.php-news-topics button {flex:1;padding:9px 6px;font-size:10px;white-space:nowrap;}.php-news-grid {grid-template-columns:1fr;gap:16px;}.php-news-card h3 {font-size:15px;}}
-@media(prefers-reduced-motion:reduce) {.php-news .is-spinning {animation:none;}.php-news-card {transition:none;}.php-news-card:hover {transform:none;}}
+@media(prefers-reduced-motion:reduce) {.php-news-card {transition:none;}.php-news-card:hover {transform:none;}}

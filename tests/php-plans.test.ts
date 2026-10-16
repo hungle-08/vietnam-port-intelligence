@@ -28,8 +28,9 @@ describe('PHP source parsing',()=>{
  });
 });
 describe('Vietnam daily collection schedule',()=>{
- it('uses Vietnam date around midnight and validates relative source offsets',()=>{const now=new Date('2026-10-13T17:00:00Z');expect(vietnamDay(now)).toBe('2026-10-14');expect(sourceOffset('2026-01-01',new Date('2026-10-13T00:00:00Z'))).toBe(-285);expect(nextDailyRun(now,1)).toBe('2026-10-14T17:00:00.000Z');});
- it('rejects arbitrary URLs and non-Hobby timing inputs',()=>{expect(()=>validatePhpConfig({enabled:true,intervalDays:1,sourceUrl:'http://localhost',runHour:0})).toThrow();expect(()=>validatePhpConfig({enabled:true,intervalDays:1,sourceUrl:'https://cangvuhaiphong.gov.vn/ke-hoach-tau/',runHour:12})).toThrow();});
+ it('uses Vietnam date around midnight and schedules the next interval at 07:00 Vietnam',()=>{const now=new Date('2026-10-13T17:00:00Z');expect(vietnamDay(now)).toBe('2026-10-14');expect(sourceOffset('2026-01-01',new Date('2026-10-13T00:00:00Z'))).toBe(-285);expect(nextDailyRun(now,1)).toBe('2026-10-15T00:00:00.000Z');expect(nextDailyRun(new Date('2026-12-31T01:45:00Z'),2)).toBe('2027-01-02T00:00:00.000Z');});
+ it('accepts 07:00 and rejects the former midnight schedule',()=>{const c={enabled:true,intervalDays:1,sourceUrl:'https://cangvuhaiphong.gov.vn/ke-hoach-tau/'};expect(validatePhpConfig({...c,runHour:7}).runHour).toBe(7);expect(()=>validatePhpConfig({...c,runHour:0})).toThrow();});
+ it('rejects arbitrary URLs and non-Hobby timing inputs',()=>{expect(()=>validatePhpConfig({enabled:true,intervalDays:1,sourceUrl:'http://localhost',runHour:7})).toThrow();expect(()=>validatePhpConfig({enabled:true,intervalDays:1,sourceUrl:'https://cangvuhaiphong.gov.vn/ke-hoach-tau/',runHour:12})).toThrow();});
 });
 
 it('retains conflicting supplemental fields without counting duplicate DWT',()=>{
@@ -42,4 +43,4 @@ it('accepts an explicitly empty transit container but rejects missing containers
  const $=load(oct);$('#TD_ShowShipPlan_QuaLuong').empty();expect(parsePhpPlan($.html(),'2026-10-13').events).toHaveLength(8);
  $('#TD_ShowShipPlan_QuaLuong').remove();expect(()=>parsePhpPlan($.html(),'2026-10-13')).toThrow();
 });
-it('rejects intervals that exceed the four-day refresh window',()=>{expect(()=>validatePhpConfig({enabled:true,intervalDays:5,sourceUrl:'https://cangvuhaiphong.gov.vn/ke-hoach-tau/',runHour:0})).toThrow();});
+it('rejects intervals that exceed the four-day refresh window',()=>{expect(()=>validatePhpConfig({enabled:true,intervalDays:5,sourceUrl:'https://cangvuhaiphong.gov.vn/ke-hoach-tau/',runHour:7})).toThrow();});

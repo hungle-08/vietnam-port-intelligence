@@ -1,3 +1,5 @@
+> Superseded on 2026-10-16: the custom trade pipeline, data and cron were replaced with the Dữ Liệu Kinh Tế API and a client-rendered chart. This document is historical.
+
 # Vietnam merchandise trade implementation
 
 Approved scope: monthly official imports/exports, normalized before Neon storage; two trend lines, balance bars, month/quarter/year selection on home. Follow the existing Next server data, admin and daily cron patterns.

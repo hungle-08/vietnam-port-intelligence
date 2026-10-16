@@ -1,4 +1,5 @@
 import {Suspense} from 'react';
+import {PageSkeleton} from '@/components/loading/skeletons';
 import {notFound,redirect} from 'next/navigation';
 import {isLocale,type Locale} from '@/lib/i18n';
 import {getCurrentUser} from '@/lib/auth/session';
@@ -9,5 +10,5 @@ async function Content({locale,mode}:{locale:Locale;mode:'login'|'register'}){
 }
 export async function AuthPage({params,mode}:{params:Promise<{locale:string}>;mode:'login'|'register'}){
  const {locale}=await params;if(!isLocale(locale))notFound();
- return <Suspense fallback={<div className="auth-loading" role="status">{locale==='vi'?'Đang tải…':'Loading…'}</div>}><Content locale={locale} mode={mode}/></Suspense>;
+ return <Suspense fallback={<PageSkeleton locale={locale} variant="auth" register={mode==='register'}/>}><Content locale={locale} mode={mode}/></Suspense>;
 }

@@ -1,9 +1,10 @@
 'use client';
+import {Spinner} from '@/components/ui/spinner';
 import {useActionState,useState,type FormEvent} from 'react';
 import {validateCredentials} from '@/lib/auth/validation';
 import Link from 'next/link';
 import {ThemeToggle} from '@/components/theme/theme-toggle';
-import {Anchor,ArrowLeft,Eye,EyeOff,LoaderCircle} from 'lucide-react';
+import {Anchor,ArrowLeft,Eye,EyeOff} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import {submitAuth} from '@/lib/auth/actions';
 import {authMessages} from '@/lib/auth/messages';
@@ -36,7 +37,7 @@ export function AuthForm({locale,mode}:{locale:Locale;mode:'login'|'register'}){
     {register&&<div className="auth-field"><label htmlFor="name">{t.name}</label><input id="name" name="name" autoComplete="name" required defaultValue={state.values?.name} aria-invalid={!!fields?.name} aria-describedby={fields?.name?'name-error':undefined} placeholder={locale==='vi'?'Tên của bạn':'Your name'}/>{fields?.name&&<p id="name-error" className="auth-field-error">{fields.name}</p>}</div>}
     <div className="auth-field"><label htmlFor="email">{t.email}</label><input id="email" name="email" type="email" inputMode="email" autoComplete="email" required maxLength={254} defaultValue={state.values?.email} aria-invalid={!!fields?.email} aria-describedby={fields?.email?'email-error':undefined} placeholder="you@example.com"/>{fields?.email&&<p id="email-error" className="auth-field-error">{fields.email}</p>}</div>
     <div className="auth-field"><label htmlFor="password">{t.password}</label><div className="auth-password"><input id="password" name="password" type={visible?'text':'password'} autoComplete={register?'new-password':'current-password'} required aria-invalid={!!fields?.password} aria-describedby={fields?.password?'password-error':register?'password-hint':undefined}/><button type="button" onClick={()=>setVisible(!visible)} aria-label={visible?t.hide:t.show} aria-pressed={visible}>{visible?<EyeOff size={18}/>:<Eye size={18}/>}</button></div>{fields?.password?<p id="password-error" className="auth-field-error">{fields.password}</p>:register&&<p id="password-hint" className="auth-hint">{t.passwordHint}</p>}</div>
-    <Button type="submit" className="auth-submit" disabled={pending}>{pending?<><LoaderCircle size={17} className="auth-spinner"/>{t.pending}</>:register?t.register:t.login}</Button>
+    <Button type="submit" className="auth-submit" disabled={pending} aria-busy={pending}>{pending?<><Spinner aria-hidden="true" role={undefined} aria-label={undefined}/>{t.pending}</>:register?t.register:t.login}</Button>
    </form>
    <p className="auth-switch">{register?t.hasAccount:t.noAccount} <Link href={`/${locale}/${register?'login':'register'}`}>{register?t.login:t.register}</Link></p>
    <p className="auth-optional">{t.optional}</p><Link className="auth-back" href={`/${locale}`}><ArrowLeft size={15}/>{t.back}</Link>

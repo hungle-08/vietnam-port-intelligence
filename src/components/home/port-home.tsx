@@ -13,11 +13,10 @@ import type {PortRecord} from '@/lib/ports/types';
 import {PortMap} from './port-map';
 import {PortDirectory} from './port-directory';
 import {PortDetails} from './port-details';
-import {ShippingRankingSection} from './shipping-ranking';
-import type {ShippingRanking} from '@/lib/shipping/types';
+import {LiveShippingRanking} from './live-shipping-ranking';
 import {TradeChart} from './trade-chart';
-import type {TradeDataset} from '@/lib/trade/types';
-export function PortHome({locale,ports,loadError,shippingRanking,tradeDataset={months:[],updatedAt:null,sourceUrl:null},tradeLoadError=false,currentDay,user=null,initialQuery='',initialRegion='all',initialSelected=null}:{locale:Locale;ports:PortRecord[];loadError:boolean;shippingRanking:ShippingRanking;tradeDataset?:TradeDataset;tradeLoadError?:boolean;currentDay:string;user?:AccountUser|null;initialQuery?:string;initialRegion?:string;initialSelected?:string|null}){
+import type {TradeData} from '@/lib/trade/types';
+export function PortHome({locale,ports,loadError,tradeDataset,tradeLoadError=false,currentDay,user=null,initialQuery='',initialRegion='all',initialSelected=null}:{locale:Locale;ports:PortRecord[];loadError:boolean;tradeDataset?:TradeData;tradeLoadError?:boolean;currentDay:string;user?:AccountUser|null;initialQuery?:string;initialRegion?:string;initialSelected?:string|null}){
  const t=getMessages(locale);const [query,setQuery]=useState(initialQuery),[region,setRegion]=useState(initialRegion),[selected,setSelected]=useState<string|null>(initialSelected);
  const filtered=filterPorts(ports,query,region);
  const holdingSelected=ports.find(p=>p.internalCode===selected&&p.mapVisible===false);
@@ -31,8 +30,8 @@ export function PortHome({locale,ports,loadError,shippingRanking,tradeDataset={m
     {holdingSelected&&<div className="mt-4 max-w-sm"><PortDetails port={holdingSelected} locale={locale} onClose={()=>setSelected(null)}/></div>}
     <p className="directory-note">{t.evidenceNote} {t.mapMissing}</p>
    </section>
-   <TradeChart dataset={tradeDataset} locale={locale} currentDay={currentDay} loadError={tradeLoadError}/>
-   <ShippingRankingSection ranking={shippingRanking} locale={locale}/>
+   <TradeChart locale={locale} currentDay={currentDay} dataset={tradeDataset} loadError={tradeLoadError}/>
+   <LiveShippingRanking locale={locale}/>
    <section className="home-method" aria-label={locale==='vi'?'Thông tin dữ liệu':'About the data'}><div><Database size={21}/><div><h3>{locale==='vi'?'Dữ liệu có nguồn đối chiếu':'Traceable data sources'}</h3><p>{locale==='vi'?'Các báo cáo đi kèm nguồn, thời điểm cập nhật và phạm vi thống kê.':'Reports include their source, update date and statistical scope.'}</p></div></div><div><Activity size={21}/><div><h3>{locale==='vi'?'Đọc số liệu đúng phạm vi':'Understand each metric'}</h3><p>{locale==='vi'?'DWT là sức chở tàu theo kế hoạch. Kim ngạch thương mại là giá trị hàng hóa bằng USD.':'DWT measures planned vessel capacity. Trade value measures merchandise in USD.'}</p></div></div></section>
   </main><footer className="site-footer"><Link href={`/${locale}`}>Vietnam Port Intelligence</Link><p>{t.footer}</p><span>© {currentDay.slice(0,4)}</span></footer>
  </div>;

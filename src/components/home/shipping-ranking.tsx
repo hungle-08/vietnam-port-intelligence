@@ -1,12 +1,13 @@
 'use client';
 import {useState} from 'react';
+import {Skeleton} from '@/components/ui/skeleton';
 import {getMessages,type Locale} from '@/lib/i18n';
 import type {Carrier,ShippingRanking} from '@/lib/shipping/types';
 function CarrierLogo({carrier}:{carrier:Carrier}){
- const [failed,setFailed]=useState(false);
- return <span className="carrier-logo" aria-hidden="true">{failed?<span style={{color:carrier.color}}>{carrier.shortName}</span>:/* External brand asset; use a text fallback on hotlink/network failure. */
+ const [failed,setFailed]=useState(false),[loaded,setLoaded]=useState(false);
+ return <div className="carrier-logo" aria-hidden="true">{failed?<span style={{color:carrier.color}}>{carrier.shortName}</span>:/* External brand asset; use a text fallback on hotlink/network failure. */
  // eslint-disable-next-line @next/next/no-img-element
- <img src={carrier.logoUrl} alt="" width={100} height={40} loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={()=>setFailed(true)}/>}</span>;
+ <>{!loaded&&<Skeleton className="carrier-logo-placeholder"/>}<img style={{opacity:loaded?1:0}} onLoad={()=>setLoaded(true)} src={carrier.logoUrl} alt="" width={100} height={40} loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={()=>setFailed(true)}/></>}</div>;
 }
 export function ShippingRankingSection({ranking,locale}:{ranking:ShippingRanking;locale:Locale}){
  const t=getMessages(locale);const number=new Intl.NumberFormat(locale==='vi'?'vi-VN':'en-US');const percentage=(n:number)=>new Intl.NumberFormat(locale==='vi'?'vi-VN':'en-US',{minimumFractionDigits:1,maximumFractionDigits:1}).format(n)+'%';
@@ -20,6 +21,6 @@ export function ShippingRankingSection({ranking,locale}:{ranking:ShippingRanking
     <div className="carrier-metrics"><div className="carrier-track" role="meter" aria-label={`${carrier.shortName} · ${t.shippingShare}`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={entry.sharePercent} aria-valuetext={percentage(entry.sharePercent)}><span className="carrier-line" style={{width:`${entry.sharePercent/axisMax*100}%`,'--carrier-color':carrier.color} as import('react').CSSProperties}><i/></span></div><strong className="carrier-share">{percentage(entry.sharePercent)}</strong><span className="carrier-fleet">{number.format(entry.capacityTeu)} <small>TEU</small>{entry.shipCount!==null&&<> <i/> {number.format(entry.shipCount)} <small>{t.shippingShips}</small></>}</span></div>
    </li>})}</ol>
   </div>
-  <div className="shipping-notes"><p>{t.shippingDefinition}</p><p>{ranking.savedCopy&&<>{t.shippingSaved} · </>}<a href={ranking.sourceUrl} target="_blank" rel="noopener noreferrer">Alphaliner TOP 100 ↗</a> · {t.shippingScope}</p></div>
+  <div className="shipping-notes"><p>{t.shippingDefinition}</p><p>{locale==='vi'?'Tải trực tiếp lúc':'Fetched at'} {new Intl.DateTimeFormat(locale==='vi'?'vi-VN':'en-GB',{timeStyle:'medium',timeZone:'Asia/Ho_Chi_Minh'}).format(new Date(ranking.retrievedAt))} (UTC+7) · <a href={ranking.sourceUrl} target="_blank" rel="noopener noreferrer">Alphaliner TOP 100 ↗</a> · {t.shippingScope}</p></div>
  </section>;
 }

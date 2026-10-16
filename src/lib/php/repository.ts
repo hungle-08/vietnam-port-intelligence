@@ -1,7 +1,7 @@
 import 'server-only';
 import {getDb} from '../db';
 import type {PlanSnapshot} from './types';
-import {scopePhpSnapshot} from './scope';
+import {regionalPlanSnapshot} from './scope';
 import {validateDay} from './config';
 export async function getPhpTerminalDailyMetrics(from:string,to:string){
  validateDay(from);validateDay(to);if(from>to)throw Error('Invalid metrics range');
@@ -9,7 +9,7 @@ export async function getPhpTerminalDailyMetrics(from:string,to:string){
  return rows.map(r=>({day:String(r.day),terminalId:String(r.terminal_id),calls:Number(r.calls),dwt:r.dwt===null?null:Number(r.dwt),missingDwt:Number(r.missing_dwt)}));
 }
 export async function savePhpDay(s:PlanSnapshot,ownerToken?:string){
- s=scopePhpSnapshot(s);
+ s=regionalPlanSnapshot(s);
  const sql=getDb();const id=`hp:${s.planDate}:${s.contentHash}`;
  const result=await sql`WITH owned AS (SELECT 1 WHERE ${ownerToken??null}::uuid IS NULL OR EXISTS(SELECT 1 FROM vessel_daily_jobs WHERE id='php-vessel-dwt' AND lease_token=${ownerToken??null}::uuid AND lease_until>now())), saved AS (
  INSERT INTO vessel_plan_snapshots(id,plan_date,fetched_at,last_seen_at,source_url,content_hash,raw_html,event_count,duplicate_count)

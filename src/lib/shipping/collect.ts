@@ -1,6 +1,6 @@
 import {carriers} from './carriers';
 import {validateShippingSnapshot} from './parse';
-import {ALPHALINER_API,validateCronConfig} from '../cron/config';
+import {ALPHALINER_API,ALPHALINER_PAGE,validateShippingSource} from './source';
 import type {ShippingSnapshot} from './types';
 type FleetRow={rank:number;operator:string;totalTeu:number;totalShips:number;percent:number};
 export function parseAlphalinerApi(payload:unknown,now:Date,sourceUrl:string):ShippingSnapshot {
@@ -18,11 +18,11 @@ export function parseAlphalinerApi(payload:unknown,now:Date,sourceUrl:string):Sh
   if(typeof row.percent!=='number'||Math.abs(row.totalTeu/world*100-row.percent)>.2)throw Error('Inconsistent capacity share');
   return {carrierId:carrier.id,rank:row.rank,sourceName:row.operator,capacityTeu:row.totalTeu,shipCount:row.totalShips,sharePercent:row.percent};
  });
- return validateShippingSnapshot({sourceId:'alphaliner',sourceUrl,retrievedAt:now.toISOString(),asOf:now.toISOString().slice(0,10),asOfBasis:'retrieval-date',retrievalMethod:'direct-http',metric:'operated-container-capacity-teu',scope:'consolidated',entries});
+ return validateShippingSnapshot({sourceId:'alphaliner',sourceUrl,retrievedAt:now.toISOString(),asOf:new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh',year:'numeric',month:'2-digit',day:'2-digit'}).format(now),asOfBasis:'retrieval-date',retrievalMethod:'direct-http',metric:'operated-container-capacity-teu',scope:'consolidated',entries});
 }
-export async function collectShipping(sourceUrl:string):Promise<ShippingSnapshot> {
- validateCronConfig({enabled:true,intervalMonths:1,dayOfMonth:1,sourceUrl});
- const response=await fetch(ALPHALINER_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(['getTop100Table','getTextCalculations'].map((method,i)=>({action:'top100',method,data:[],type:'rpc',tid:i+1}))),signal:AbortSignal.timeout(20000),redirect:'error',cache:'no-store'});
+export async function collectShipping(sourceUrl:string=ALPHALINER_PAGE,signal?:AbortSignal):Promise<ShippingSnapshot> {
+ validateShippingSource(sourceUrl);
+ const response=await fetch(ALPHALINER_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(['getTop100Table','getTextCalculations'].map((method,i)=>({action:'top100',method,data:[],type:'rpc',tid:i+1}))),signal:AbortSignal.any([AbortSignal.timeout(20000),...(signal?[signal]:[])]),redirect:'error',cache:'no-store'});
  if(!response.ok||!response.body)throw Error('Source unavailable');
  const reader=response.body.getReader();let size=0;const chunks:Uint8Array[]=[];
  try{while(true){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;if(size>2_000_000)throw Error('Source too large');chunks.push(value);}}finally{await reader.cancel();}

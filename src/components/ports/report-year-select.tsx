@@ -1,4 +1,5 @@
 'use client';
+import {Spinner} from '@/components/ui/spinner';
 import {useTransition} from 'react';
 import {useRouter} from 'next/navigation';
 import {Button} from '@/components/ui/button';
@@ -10,6 +11,6 @@ export function ReportYearSelect({year,currentYear,locale}:{year:number;currentY
  const path=`/${locale}/ports/PHP`;
  return <form action={path} method="get" className="report-year-form" onSubmit={e=>{e.preventDefault();const selected=new FormData(e.currentTarget).get('year');startTransition(()=>router.push(`${path}?year=${selected}`));}}>
   <label htmlFor="report-year">{t.year}</label><select id="report-year" name="year" defaultValue={year} disabled={pending} onChange={e=>e.currentTarget.form?.requestSubmit()} aria-label={t.year}>{years.sort((a,b)=>b-a).map(y=><option key={y} value={y}>{y}</option>)}</select>
-  <Button type="submit" size="sm" variant="outline" disabled={pending}>{pending?t.loading:t.apply}</Button><span className="sr-only" role="status">{pending?t.loading:''}</span>
+  <Button type="submit" size="sm" variant="outline" disabled={pending} aria-busy={pending}>{pending?<><Spinner aria-hidden="true" role={undefined} aria-label={undefined}/>{t.loading}</>:t.apply}</Button><span className="sr-only" role="status">{pending?t.loading:''}</span>
  </form>;
 }

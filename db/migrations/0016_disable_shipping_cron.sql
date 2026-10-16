@@ -1,0 +1,1 @@
+UPDATE admin_job_configs SET enabled=false,lease_token=NULL,lease_until=NULL,revision=revision+1,updated_at=now() WHERE id='shipping-top-ten' AND (enabled OR lease_token IS NOT NULL OR lease_until IS NOT NULL);

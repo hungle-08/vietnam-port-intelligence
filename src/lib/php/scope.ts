@@ -14,3 +14,9 @@ export function scopePhpSnapshot(s:PlanSnapshot):PlanSnapshot{
  const rawHtml=`<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>PHP ${s.planDate}</title></head><body><pre>${audit}</pre></body></html>`;
  return {...s,events,contentHash,rawHtml};
 }
+
+export function regionalPlanSnapshot(s:PlanSnapshot):PlanSnapshot{
+ const canonical=s.events.map(e=>({...e,sourceOrdinal:0,rawCells:undefined})).sort((a,b)=>a.key.localeCompare(b.key));
+ const contentHash=createHash('sha256').update(JSON.stringify(['haiphong-regional-plan-v1',canonical])).digest('hex');
+ return {...s,contentHash};
+}
