@@ -15,6 +15,7 @@ import {
   getPhpTerminalDailyMetrics,
 } from "@/lib/php/repository";
 import { phpMessages } from "@/lib/php/messages";
+import {getPhpTerminalHistory} from "@/lib/php/terminal-history-repository";
 import { getLachHuyenMonths } from "@/lib/php/lach-huyen-repository";
 import { buildLachHuyenMonths } from "@/lib/php/lach-huyen";
 import { PhpReport } from "@/components/ports/php-report";
@@ -64,11 +65,14 @@ async function ReportContent({
   } catch {
     loadError = true;
   }
-  const regional = await getLachHuyenMonths(asOf)
-    .then((months) => ({ months, error: false }))
-    .catch(() => ({ months: buildLachHuyenMonths([], [], asOf), error: true }));
+  const [regional,terminalHistory] = await Promise.all([
+    getLachHuyenMonths(asOf).then(months=>({months,error:false})).catch(()=>({months:buildLachHuyenMonths([],[],asOf),error:true})),
+    getPhpTerminalHistory(asOf).then(data=>({data,error:false})).catch(()=>({data:{},error:true}))
+  ]);
   return (
     <PhpReport
+      terminalHistory={terminalHistory.data}
+      terminalLoadError={terminalHistory.error}
       lachHuyenMonths={regional.months}
       lachHuyenError={regional.error}
       locale={locale}

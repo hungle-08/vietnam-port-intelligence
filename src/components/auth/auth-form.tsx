@@ -1,4 +1,5 @@
 'use client';
+import {SiteBrand} from '@/components/layout/site-brand';
 import {Spinner} from '@/components/ui/spinner';
 import {useActionState,useState,type FormEvent} from 'react';
 import {validateCredentials} from '@/lib/auth/validation';
@@ -28,7 +29,7 @@ export function AuthForm({locale,mode}:{locale:Locale;mode:'login'|'register'}){
  }
 
  return <div className="auth-page">
-  <header className="auth-header"><Link href={`/${locale}`} className="brand"><span className="brand-mark"><Anchor size={22}/></span><span>VIETNAM PORT<span className="brand-sub">INTELLIGENCE</span></span></Link><div className="auth-header-controls"><ThemeToggle locale={locale}/><div className="locale-switch" aria-label={t.language}>{(['vi','en'] as const).map(l=><Link key={l} href={`/${l}/${mode}`} aria-current={locale===l?'page':undefined}>{l.toUpperCase()}</Link>)}</div></div></header>
+  <header className="auth-header"><SiteBrand locale={locale}/><div className="auth-header-controls"><ThemeToggle locale={locale}/><div className="home-language" aria-label={t.language}>{(['vi','en'] as const).map(l=><Link key={l} href={`/${l}/${mode}`} aria-current={locale===l?'page':undefined}>{l.toUpperCase()}</Link>)}</div></div></header>
   <main className="auth-main"><section className="auth-card" aria-labelledby="auth-title">
    <div className="auth-emblem"><Anchor size={28}/></div><p className="eyebrow">VIETNAM PORT INTELLIGENCE</p><h1 id="auth-title">{register?t.registerTitle:t.loginTitle}</h1><p className="auth-intro">{t.intro}</p>
    <div className="auth-tabs"><Link href={`/${locale}/login`} aria-current={!register?'page':undefined}>{t.login}</Link><Link href={`/${locale}/register`} aria-current={register?'page':undefined}>{t.register}</Link></div>

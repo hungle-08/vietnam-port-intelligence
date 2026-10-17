@@ -1,6 +1,7 @@
 import type {TradeMode,TradeMonth,TradePeriod} from './types';
 export type TimeRange=[number,number];
-export type RangeChoice=1|2|3|5|10|'all'|`${number}`;
+export const DEFAULT_TRADE_RANGE='latest-12-months' as const;
+export type RangeChoice=1|2|3|5|10|'all'|typeof DEFAULT_TRADE_RANGE|`${number}`;
 const round=(value:number)=>Math.round(value*100)/100;
 export function tradeTimeline(months:TradeMonth[],mode:TradeMode,currentDay:string):TradePeriod[]{
  const current=currentDay.slice(0,7),available=months.filter(m=>m.period<=current).sort((a,b)=>a.period.localeCompare(b.period));
@@ -27,6 +28,10 @@ export function clampRange(range:TimeRange,count:number):TimeRange{
 }
 export function yearRange(periods:TradePeriod[],choice:RangeChoice):TimeRange{
  if(!periods.length)return [0,0];
+ if(choice===DEFAULT_TRADE_RANGE){
+  const end=periods.findLastIndex(p=>p.exportsUsd!==null||p.importsUsd!==null);
+  return end<0?[0,0]:[Math.max(0,end-11),end];
+ }
  if(choice==='all')return [0,periods.length-1];
  if(typeof choice==='string'){
   const indices=periods.flatMap((p,i)=>p.period.slice(0,4)===choice?[i]:[]);

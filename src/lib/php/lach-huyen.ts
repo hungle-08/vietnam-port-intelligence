@@ -1,8 +1,9 @@
+import {PORT_COLORS} from '@/lib/ports/colors';
 import {validateDay} from './config';
 export const LACH_HUYEN_PORTS=[
- {id:'hict',sourceName:'HICT',name:'TC-HICT',berths:'1–2',vi:'Tân Cảng Hải Phòng',en:'Tan Cang Hai Phong',color:'#54a7f0'},
- {id:'htit',sourceName:'HTIT',name:'HTIT',berths:'3–4',vi:'TIL Cảng Hải Phòng · PHP',en:'Haiphong Port TIL · PHP',color:'#2bc8b3'},
- {id:'hhit',sourceName:'HHIT',name:'HHIT',berths:'5–6',vi:'Hateco Hải Phòng',en:'Hateco Hai Phong',color:'#eda85b'},
+ {id:'hict',sourceName:'HICT',name:'TC-HICT',berths:'1–2',vi:'Tân Cảng Hải Phòng',en:'Tan Cang Hai Phong',color:PORT_COLORS.hict},
+ {id:'htit',sourceName:'HTIT',name:'HTIT',berths:'3–4',vi:'TIL Cảng Hải Phòng · PHP',en:'Haiphong Port TIL · PHP',color:PORT_COLORS.htit},
+ {id:'hhit',sourceName:'HHIT',name:'HHIT',berths:'5–6',vi:'Hateco Hải Phòng',en:'Hateco Hai Phong',color:PORT_COLORS.hhit},
 ] as const;
 export type RegionalPortRow={period:string;name:string;calls:number;dwt:number|null;missingDwt:number};
 export type RegionalMonth={period:string;daysAvailable:number;daysExpected:number;status:'missing'|'current'|'partial'|'complete';ports:{id:string;calls:number|null;dwt:number|null;missingDwt:number;dwtShare:number|null;callShare:number|null}[]};

@@ -5,17 +5,17 @@ import {ChartLoading} from '@/components/loading/route-loading';
 import {ArrowUpRight,Maximize2,Minimize2,Minus,Plus,RotateCcw} from 'lucide-react';
 import type {Locale} from '@/lib/i18n';
 import type {TradeData,TradeMode} from '@/lib/trade/types';
-import {TRADE_SERIES,tradeTimeline,tradePeriodLabel,yearRange,zoomRange,type RangeChoice,type TimeRange} from '@/lib/trade/range';
+import {DEFAULT_TRADE_RANGE,TRADE_SERIES,tradeTimeline,tradePeriodLabel,yearRange,zoomRange,type RangeChoice,type TimeRange} from '@/lib/trade/range';
 import './trade-chart.css';
 const TradePlot=dynamic(()=>import('./trade-plot'),{ssr:false,loading:()=> <ChartLoading className="trade-plot-loading"/>});
 const EMPTY:TradeData={months:[],updatedAt:null};
 
 export function TradeChart({locale,currentDay,dataset=EMPTY,loadError=false}:{locale:Locale;currentDay:string;dataset?:TradeData;loadError?:boolean}){
  const vi=locale==='vi',card=useRef<HTMLDivElement>(null),dialog=useRef<HTMLDialogElement>(null),expandButton=useRef<HTMLButtonElement>(null),wasExpanded=useRef(false);
- const [mode,setMode]=useState<TradeMode>('month'),[choice,setChoice]=useState<RangeChoice|'custom'>(1),[customRange,setCustomRange]=useState<TimeRange|null>(null);
+ const [mode,setMode]=useState<TradeMode>('month'),[choice,setChoice]=useState<RangeChoice|'custom'>(DEFAULT_TRADE_RANGE),[customRange,setCustomRange]=useState<TimeRange|null>(null);
  const [visible,setVisible]=useState([true,true,true]),[activeIndex,setActiveIndex]=useState<number|null>(null),[expanded,setExpanded]=useState(false);
  const periods=useMemo(()=>tradeTimeline(dataset.months,mode,currentDay),[dataset.months,mode,currentDay]);
- const preset=useMemo(()=>yearRange(periods,choice==='custom'?1:choice),[periods,choice]);
+ const preset=useMemo(()=>yearRange(periods,choice==='custom'?DEFAULT_TRADE_RANGE:choice),[periods,choice]);
  const range=customRange??preset;
  const years=[...new Set(dataset.months.filter(p=>p.period<=currentDay.slice(0,7)&&(p.exportsUsd!==null||p.importsUsd!==null)).map(p=>p.period.slice(0,4)))].sort().reverse();
  const populated=periods.some(p=>p.exportsUsd!==null||p.importsUsd!==null);
@@ -29,18 +29,19 @@ export function TradeChart({locale,currentDay,dataset=EMPTY,loadError=false}:{lo
  },[]);
  const pickRange=(value:RangeChoice)=>{setChoice(value);setCustomRange(null);setActiveIndex(null);};
  const zoom=(factor:number)=>{setChoice('custom');onRange(zoomRange(range,factor,periods.length));setActiveIndex(null);};
- const reset=()=>{setMode('month');pickRange(1);};
+ const reset=()=>{setMode('month');pickRange(DEFAULT_TRADE_RANGE);};
  useEffect(()=>{
   if(expanded){dialog.current?.showModal();wasExpanded.current=true;}
   else if(wasExpanded.current){expandButton.current?.focus();wasExpanded.current=false;}
  },[expanded]);
  const rangeCaption=window.length?window.length===1?label(window[0].period):`${label(window[0].period)} – ${label(window.at(-1)!.period)}`:'—';
  const custom=customRange!==null&&(customRange[0]!==preset[0]||customRange[1]!==preset[1]);
+ const calendarYear=typeof choice==='string'&&/^\d{4}$/.test(choice);
  const chartCard=  <div className="trade-line-card" ref={card}>
    <div className="trade-line-toolbar">
-    <div className="trade-line-modes" aria-label={vi?'Kỳ dữ liệu':'Data period'}>{(['month','quarter','year'] as const).map(m=><button type="button" key={m} aria-pressed={mode===m} onClick={()=>{setMode(m);setCustomRange(null);setActiveIndex(null);setChoice(m==='year'?5:m==='quarter'?2:1);}}>{m==='month'?(vi?'Tháng':'Monthly'):m==='quarter'?(vi?'Quý':'Quarterly'):(vi?'Năm':'Yearly')}</button>)}</div>
-    <div className="trade-range-selectors"><label><span>{vi?'Khoảng xem':'Range'}</span><select aria-label={vi?'Khoảng thời gian':'Time range'} disabled={!populated} value={choice==='custom'||custom?'custom':typeof choice==='number'||choice==='all'?String(choice):'calendar'} onChange={e=>pickRange(e.target.value==='all'?'all':Number(e.target.value) as 1|2|3|5|10)}>{(choice==='custom'||custom)&&<option value="custom">{vi?'Tùy chỉnh':'Custom'}</option>}{typeof choice==='string'&&choice!=='all'&&choice!=='custom'&&!custom&&<option value="calendar">{vi?'Theo năm':'Calendar year'}</option>}{([1,2,3,5,10] as const).map(n=><option key={n} value={n}>{n} {vi?'năm':n===1?'year':'years'}</option>)}<option value="all">{vi?'Tất cả':'All history'}</option></select></label>
-     <label><span>{vi?'Chọn năm':'Year'}</span><select aria-label={vi?'Chọn năm':'Select year'} disabled={!years.length} value={typeof choice==='string'&&!['all','custom'].includes(choice)&&!custom?choice:''} onChange={e=>{pickRange(e.target.value?e.target.value as `${number}`:'all');}}><option value="">{vi?'Tất cả năm':'All years'}</option>{years.map(y=><option key={y} value={y}>{y}</option>)}</select></label></div>
+    <div className="trade-line-modes" aria-label={vi?'Kỳ dữ liệu':'Data period'}>{(['month','quarter','year'] as const).map(m=><button type="button" key={m} aria-pressed={mode===m} onClick={()=>{setMode(m);setCustomRange(null);setActiveIndex(null);setChoice(m==='year'?5:m==='quarter'?2:DEFAULT_TRADE_RANGE);}}>{m==='month'?(vi?'Tháng':'Monthly'):m==='quarter'?(vi?'Quý':'Quarterly'):(vi?'Năm':'Yearly')}</button>)}</div>
+    <div className="trade-range-selectors"><label><span>{vi?'Khoảng xem':'Range'}</span><select aria-label={vi?'Khoảng thời gian':'Time range'} disabled={!populated} value={choice==='custom'||custom?'custom':calendarYear?'calendar':String(choice)} onChange={e=>pickRange(e.target.value===DEFAULT_TRADE_RANGE?DEFAULT_TRADE_RANGE:e.target.value==='all'?'all':Number(e.target.value) as 1|2|3|5|10)}>{(choice==='custom'||custom)&&<option value="custom">{vi?'Tùy chỉnh':'Custom'}</option>}{calendarYear&&!custom&&<option value="calendar">{vi?'Theo năm':'Calendar year'}</option>}{mode==='month'&&<option value={DEFAULT_TRADE_RANGE}>{vi?'12 tháng gần nhất':'Latest 12 months'}</option>}{([1,2,3,5,10] as const).filter(n=>mode!=='month'||n!==1).map(n=><option key={n} value={n}>{n} {vi?'năm':n===1?'year':'years'}</option>)}<option value="all">{vi?'Tất cả':'All history'}</option></select></label>
+     <label><span>{vi?'Chọn năm':'Year'}</span><select aria-label={vi?'Chọn năm':'Select year'} disabled={!years.length} value={calendarYear&&!custom?choice:''} onChange={e=>{pickRange(e.target.value?e.target.value as `${number}`:'all');}}><option value="">{vi?'Tất cả năm':'All years'}</option>{years.map(y=><option key={y} value={y}>{y}</option>)}</select></label></div>
     <div className="trade-chart-tools"><button type="button" disabled={!populated||range[0]===range[1]} aria-label={vi?'Phóng to khoảng thời gian':'Zoom in time range'} title={vi?'Phóng to khoảng thời gian':'Zoom in time range'} onClick={()=>zoom(.7)}><Plus size={16}/></button><button type="button" disabled={!populated||(range[0]===0&&range[1]===periods.length-1)} aria-label={vi?'Thu nhỏ khoảng thời gian':'Zoom out time range'} title={vi?'Thu nhỏ khoảng thời gian':'Zoom out time range'} onClick={()=>zoom(1.4)}><Minus size={16}/></button><button type="button" onClick={reset} title={vi?'Đặt lại biểu đồ':'Reset chart'} aria-label={vi?'Đặt lại biểu đồ':'Reset chart'}><RotateCcw size={15}/></button><button type="button" ref={expandButton} onClick={()=>setExpanded(value=>!value)} aria-pressed={expanded} title={vi?'Phóng lớn biểu đồ · Esc để thoát':'Expand chart · Esc to exit'} aria-label={expanded?(vi?'Thu gọn biểu đồ':'Collapse chart'):(vi?'Phóng lớn biểu đồ':'Expand chart')}>{expanded?<Minimize2 size={15}/>:<Maximize2 size={15}/>}</button></div>
    </div>
    <div className="trade-line-meta"><span aria-live="polite">{rangeCaption}</span><span>{vi?'Tỷ USD':'USD billion'}</span></div>

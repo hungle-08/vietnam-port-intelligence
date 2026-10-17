@@ -36,9 +36,9 @@ function PortMarkers({points,ports,locale,selectedId,onHover,onActivate}:{points
   const areaLabels=[...new Set(members.flatMap(p=>{const port=ports.find(port=>port.internalCode===p.portId)!;return port.entityType==='group'?[]:[port.sourceLocation]}))];
   const areaLabel=areaLabels.length===1?areaLabels[0]:getMessages(locale)[first.region];
   return <Marker key={cluster.ids[0]} coordinates={[first.longitude,first.latitude]} role="button" tabIndex={0} aria-label={name} onMouseEnter={()=>onHover(cluster.ids)} onFocus={()=>onHover(cluster.ids)} onClick={()=>onActivate(cluster.ids)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();onActivate(cluster.ids)}}}>
-   <title>{name}</title><circle className="map-port-halo" style={{animationDelay:`${-index*.65}s`}} r={(codes.length>1?18:13)} fill="none" stroke="#06b6d4" strokeWidth={1} pointerEvents="none"/><circle className="map-port-core" data-active={active} r={(codes.length>1?12:active?8:6)} fill={active?'#0891b2':'#082f49'} stroke="#67e8f9" strokeWidth={2}/>
-   {codes.length>1?<text textAnchor="middle" dominantBaseline="central" fontSize={10} fontWeight={600} fill="white" pointerEvents="none">{codes.length}</text>:null}
-   <text x={17} y={3} fontSize={10} fontWeight={600} fill="var(--foreground)" stroke="var(--background)" strokeWidth={3} paintOrder="stroke" pointerEvents="none">{codes.length>1?areaLabel:codes[0]}</text>
+   <title>{name}</title><circle className="map-port-target" r={24} fill="transparent"/><circle className="map-port-halo" style={{animationDelay:`${-index*.65}s`}} r={(codes.length>1?18:13)} fill="none" stroke="var(--ring)" strokeWidth={1} pointerEvents="none"/><circle className="map-port-core" data-active={active} r={(codes.length>1?12:active?8:6)} fill={active?'var(--primary)':'var(--card)'} stroke="var(--ring)" strokeWidth={2}/>
+   {codes.length>1?<text className="map-port-count" textAnchor="middle" dominantBaseline="central" fontSize={10} fontWeight={600} fill={active?'var(--primary-foreground)':'var(--foreground)'} pointerEvents="none">{codes.length}</text>:null}
+   <text className="map-port-label" x={17} y={3} fontSize={10} fontWeight={600} fill="var(--foreground)" stroke="var(--background)" strokeWidth={3} paintOrder="stroke" pointerEvents="none">{codes.length>1?areaLabel:codes[0]}</text>
   </Marker>;
  });
 }
@@ -72,7 +72,7 @@ export function PortMap({ports,locale,selectedId,onSelect}:{ports:PortRecord[];l
     </g>)}</Geographies>
     {archipelagos.map(a=><g key={a.id} aria-label={a.name}>
      {a.points.map(p=><Marker key={p.name} coordinates={p.coordinates}><title>{`${p.name} · ${a.name}`}</title><circle className="map-island-point" r={2.6} fill="#da251d" stroke="#ffde00" strokeWidth={.8}/></Marker>)}
-     <Marker coordinates={a.label}><text textAnchor="middle" fontSize={12} fontWeight={550} fill="var(--foreground)">{a.name}</text><text textAnchor="middle" y={14} fontSize={8} fill="var(--muted-foreground)">{locale==='vi'?'Quần đảo':'Archipelago'}</text></Marker>
+     <Marker coordinates={a.label}><text className="map-island-label" textAnchor="middle" fontSize={12} fontWeight={550} fill="var(--foreground)">{a.name}</text><text className="map-island-caption" textAnchor="middle" y={14} fontSize={8} fill="var(--muted-foreground)">{locale==='vi'?'Quần đảo':'Archipelago'}</text></Marker>
     </g>)}
     <MapTraffic points={points} animated={!reduce&&inView}/>
     <PortMarkers points={points} ports={ports} locale={locale} selectedId={selectedId} onHover={ids=>{if(!pinnedGroup)setHoverIds(ids)}} onActivate={activate}/>

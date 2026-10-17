@@ -19,8 +19,8 @@ export default function LachHuyenPlot({chartType,months,metric,visible,vi,onActi
    const option:EChartsOption={backgroundColor:'transparent',animationDuration:250,
     aria:{enabled:true,label:{description:vi?'Tỷ trọng ba cảng container Lạch Huyện theo tháng. Tháng không có dữ liệu được để trống.':'Shares of three Lach Huyen container terminals by month. Missing months are left blank.'}},
     grid:{left:compact?43:58,right:20,top:22,bottom:95},
-    xAxis:{type:'category',boundaryGap:chartType==='stacked',data:months.map(m=>label(m.period)+(m.status==='current'?' *':'')),axisTick:{show:false},axisLine:{lineStyle:{color:c('--border')}},axisLabel:{color:c('--muted-foreground'),fontSize:10,hideOverlap:true,interval:'auto'}},
-    yAxis:{type:'value',min:0,max:100,interval:25,axisLabel:{formatter:'{value}%',color:c('--muted-foreground'),fontSize:11},splitLine:{lineStyle:{color:c('--border'),type:'dashed',opacity:.7}}},
+    xAxis:{type:'category',boundaryGap:chartType==='stacked',data:months.map(m=>label(m.period)+(m.status==='current'?' *':'')),axisTick:{show:false},axisLine:{lineStyle:{color:c('--border')}},axisLabel:{color:c('--muted-foreground'),fontSize:12,hideOverlap:true,interval:'auto'}},
+    yAxis:{type:'value',min:0,max:100,interval:25,axisLabel:{formatter:'{value}%',color:c('--muted-foreground'),fontSize:12},splitLine:{lineStyle:{color:c('--border'),type:'dashed',opacity:.7}}},
     tooltip:{trigger:'axis',axisPointer:{type:chartType==='stacked'?'shadow':'line'},confine:true,renderMode:'richText',backgroundColor:c('--card'),borderColor:c('--border'),textStyle:{color:c('--foreground'),fontSize:12},formatter:(input:unknown)=>{
      const p=(Array.isArray(input)?input[0]:input) as {dataIndex?:number};const m=months[p?.dataIndex??0];if(!m)return '';
      return [label(m.period),...(m.status==='current'?[vi?'Đang tổng hợp · tỷ trọng tạm tính':'Provisional · month to date']:m.status==='partial'?[vi?'Chưa đủ dữ liệu tháng':'Incomplete month']:[]),`${m.daysAvailable}/${m.daysExpected} ${vi?'ngày có dữ liệu':'days available'}`,...LACH_HUYEN_PORTS.map((p,i)=>{
@@ -40,7 +40,7 @@ export default function LachHuyenPlot({chartType,months,metric,visible,vi,onActi
        : {value,symbol:'diamond',symbolSize:10,itemStyle:{color:c('--card'),borderColor:c('--lh-'+p.id),borderWidth:2}};
      }),emphasis:{focus:'series' as const}};
      return chartType==='stacked'
-      ? {...common,type:'bar' as const,stack:'share',barMaxWidth:58,barCategoryGap:'32%',label:{show:!compact,position:'inside' as const,color:document.documentElement.classList.contains('dark')?'#081421':'#fff',fontSize:11,fontWeight:600,formatter:(params:{value:unknown})=>typeof params.value==='number'&&params.value>=8?n.format(params.value)+'%':''}}
+      ? {...common,type:'bar' as const,stack:'share',barMaxWidth:58,barCategoryGap:'32%',label:{show:!compact,position:'inside' as const,color:document.documentElement.classList.contains('dark')?'#081421':'#fff',fontSize:12,fontWeight:600,formatter:(params:{value:unknown})=>typeof params.value==='number'&&params.value>=8?n.format(params.value)+'%':''}}
       : {...common,type:'line' as const,connectNulls:false,smooth:false,showSymbol:true,symbolSize:5,lineStyle:{width:p.id==='htit'?3:2.5,color:c('--lh-'+p.id)}};
     }),
    };chart.setOption(option,{notMerge:true});
