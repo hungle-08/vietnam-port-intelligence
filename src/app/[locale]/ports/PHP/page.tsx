@@ -13,6 +13,7 @@ import {
   getPhpDailyMetrics,
   getPhpReportMetadata,
   getPhpTerminalDailyMetrics,
+  getPhpTodayArrivals,
 } from "@/lib/php/repository";
 import { phpMessages } from "@/lib/php/messages";
 import {getPhpTerminalHistory} from "@/lib/php/terminal-history-repository";
@@ -45,6 +46,9 @@ async function ReportContent({
     asOf = vietnamDay(now),
     year = resolveReportYear((await searchParams).year, now),
     currentYear = Number(asOf.slice(0, 4));
+  const todayPromise = getPhpTodayArrivals(asOf)
+    .then((data) => ({ data, error: false }))
+    .catch(() => ({ data: { available: false, observedAt: null, arrivals: [] }, error: true }));
   let report = aggregatePhpMonths([], year, asOf),
     contributions = aggregatePhpContributions([], [], year, asOf),
     metadata: Awaited<ReturnType<typeof getPhpReportMetadata>> = {
@@ -69,9 +73,11 @@ async function ReportContent({
     getLachHuyenMonths(asOf).then(months=>({months,error:false})).catch(()=>({months:buildLachHuyenMonths([],[],asOf),error:true})),
     getPhpTerminalHistory(asOf).then(data=>({data,error:false})).catch(()=>({data:{},error:true}))
   ]);
+  const today = await todayPromise;
   return (
     <PhpReport
       terminalHistory={terminalHistory.data}
+      today={asOf}
       terminalLoadError={terminalHistory.error}
       lachHuyenMonths={regional.months}
       lachHuyenError={regional.error}
@@ -82,6 +88,8 @@ async function ReportContent({
       contributions={contributions}
       metadata={metadata}
       loadError={loadError}
+      todayArrivals={today.data}
+      todayLoadError={today.error}
     />
   );
 }

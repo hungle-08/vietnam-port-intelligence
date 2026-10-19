@@ -3,6 +3,34 @@ import {getDb} from '../db';
 import type {PlanSnapshot} from './types';
 import {regionalPlanSnapshot} from './scope';
 import {validateDay} from './config';
+import {phpTerminals} from './directory';
+
+export type PhpTodayArrival={eventKey:string;vesselName:string;plannedTime:string|null;dwt:number|null;fromName:string|null;toTerminal:string};
+export type PhpTodayArrivalsResult={available:boolean;observedAt:string|null;arrivals:PhpTodayArrival[]};
+
+export async function getPhpTodayArrivals(day:string):Promise<PhpTodayArrivalsResult>{
+ validateDay(day);
+ const [tanVu,hoangDieu,chuaVe,htit,dinhVu]=phpTerminals;
+ const rows=await getDb()`SELECT d.snapshot_id IS NOT NULL AS available,d.observed_at,e.event_key,e.vessel_name,to_char(e.planned_time,'HH24:MI') AS planned_time,e.dwt::text AS dwt,e.payload->>'fromName' AS from_name,e.to_terminal
+ FROM (SELECT 1) AS requested
+ LEFT JOIN vessel_plan_days d ON d.source_id='haiphong-maritime-authority' AND d.plan_date=${day}::date
+ LEFT JOIN vessel_plan_events e ON e.snapshot_id=d.snapshot_id AND e.movement='arrival' AND e.to_terminal IN (${tanVu.id},${hoangDieu.id},${chuaVe.id},${htit.id},${dinhVu.id})
+ ORDER BY e.planned_time NULLS LAST,e.vessel_name,e.event_key`;
+ const first=rows[0];
+ return {
+  available:first?.available===true,
+  observedAt:first?.observed_at?new Date(first.observed_at).toISOString():null,
+  arrivals:rows.filter(r=>r.event_key!==null&&r.event_key!==undefined).map(r=>({
+   eventKey:String(r.event_key),
+   vesselName:String(r.vessel_name),
+   plannedTime:r.planned_time===null?null:String(r.planned_time),
+   dwt:r.dwt===null?null:Number(r.dwt),
+   fromName:r.from_name?String(r.from_name):null,
+   toTerminal:String(r.to_terminal),
+  })),
+ };
+}
+
 export async function getPhpTerminalDailyMetrics(from:string,to:string){
  validateDay(from);validateDay(to);if(from>to)throw Error('Invalid metrics range');
  const rows=await getDb()`SELECT plan_date::text AS day,terminal_id,sum(planned_arrivals)::integer AS calls,sum(known_dwt) AS dwt,sum(missing_dwt)::integer AS missing_dwt FROM issuer_daily_planned_dwt WHERE ticker='PHP' AND plan_date BETWEEN ${from}::date AND ${to}::date GROUP BY plan_date,terminal_id ORDER BY plan_date,terminal_id`;
