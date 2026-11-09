@@ -215,3 +215,22 @@ Hồ sơ chi tiết 5 cảng có mô tả mở rộng, nhóm hạ tầng/năng l
 Rà soát giao diện 16/10/2026: token màu cảng dùng chung ở `src/lib/ports/colors.ts`, giá trị light/dark trong `globals.css`; HTIT giữ cùng màu ở hồ sơ PHP, chart riêng, đóng góp và so sánh Lạch Huyện. ECharts lấy màu CSS đã resolve để vẽ canvas và redraw khi đổi theme. Dùng chung `SiteBrand` cho Home/PHP/auth/admin; tăng chữ nhỏ lên 12px, card danh mục mobile gọn hơn nhưng giữ đủ danh sách, nhãn/điểm chạm bản đồ tăng theo breakpoint, phạm vi PHP mở rộng bằng details và thanh tab có gợi ý vuốt. Hồ sơ cảng gom các nguồn trùng nhau trong phần nguồn, mỗi chỉ số giữ liên kết trực tiếp. Không đổi logic số liệu hoặc cấu hình cron.
 
 Brand highlight cập nhật 17/10/2026: xanh biển sâu thiên xanh dương. Hai theme dùng primary #1E5AA8, hover #276FC1, chữ nút #FFFFFF và focus #4B91E2. Link/highlight dark #74B3FF, light #245FA5; nền chọn nhẹ dark #74B3FF1A, light #EDF4FF. Nút, tab, hover, focus, logo và marker bản đồ đọc token chung. Giữ nguyên nền/gradient trang, card và màu dữ liệu biểu đồ.
+
+### CDN — lượt tàu container cập Tiên Sa
+
+Nguồn [Cảng Đà Nẵng](https://danangport.com/tra-cuu-tau-container/) cung cấp ATB, cầu bến, hãng tàu, chuyến và TEU thực tế cho tàu container. Crawler chỉ gắn Tiên Sa cho các mã cầu đã xác minh; mã lạ lưu riêng để kiểm tra. DWT không phải sản lượng hàng hóa. TEU từ lượt tàu là thông tin khai thác, không phải sức chở tàu.
+
+- `npm run db:migrate` tạo bảng CDN và view tổng hợp theo tháng ATB (giờ Việt Nam).
+- `npm run cdn:backfill` lấy lịch sử từ 01/01/2026 đến hiện tại, có thể chạy lại. Nguồn lọc tháng rời bến nên cần đồng bộ các tháng sau để bổ sung lượt cập qua ranh giới tháng.
+- Cron `/api/cron/cdn-arrivals` xác thực bằng `CRON_SECRET`, cấu hình 00:00 UTC (07:00–07:59 Việt Nam trên Vercel Hobby). Cron cần deploy lên Vercel để hoạt động.
+- IMO và DWT: tra Wikidata miễn phí độc lập với giá trị DWT trùng tên từ Hải Phòng. Tất cả chỉ là ứng viên; admin phải kiểm tra và xác nhận từng lượt vì trùng tên không chứng minh cùng tàu. Wikidata có thể thiếu hoặc sai, nguồn và DWT cần được đối chiếu.
+- Không kết luận tháng đầy đủ chỉ vì có kết quả; dữ liệu có thể được nguồn chỉnh sửa, cập nhật muộn hoặc thiếu lượt. Bảng `cdn_monthly_arrival_stats` thể hiện số lượt biết DWT/TEU cùng tổng giá trị đã biết.
+- `npm run cdn:dwt -- --limit 30` tra tối đa 30 tên tàu và lưu ứng viên để duyệt.
+
+### Đối chiếu IMO tàu Cảng Đà Nẵng
+
+`npm run cdn:dwt -- --limit 300` tra Wikidata theo từng tên tàu chưa liên kết; DWT trùng tên trong dữ liệu Hải Phòng chỉ là tham khảo. Kết quả cần được quản trị viên kiểm tra với nguồn độc lập và nhập bằng chứng trước khi xác nhận từng lượt. Chỉ IMO đã được đối chiếu mới được gắn vào danh mục tàu; trường hợp không có DWT vẫn có thể xác nhận IMO, nhưng không được tính DWT. Tên tàu trùng nhau không tự động chứng minh các lượt là cùng một tàu.
+
+### Lưu link YouTube livestream
+
+Trang `/vi/livestreams` liệt kê các đường dẫn đã lưu theo ngày giờ Việt Nam. Endpoint `/api/cron/youtube-live` cần `CRON_SECRET` và `YOUTUBE_API_KEY` (YouTube Data API v3). GitHub Actions chạy vào 10:15, 10:25, 10:45 và 11:00 giờ Việt Nam; cấu hình repository secrets `APP_URL` (URL production) và `CRON_SECRET`, sau đó đưa workflow lên nhánh mặc định. Đồng thời cấu hình `YOUTUBE_API_KEY` và `CRON_SECRET` trên Vercel. GitHub Actions có thể chạy trễ hoặc bỏ lượt khi quá tải; không đảm bảo phát hiện tất cả livestream. Mỗi lượt gọi API `search.list` dùng hạn mức API; không có kết quả không chứng minh cả ngày không có live. Video sau đó chuyển riêng tư hoặc bị xóa sẽ không xem được dù đã lưu URL. Không lưu nội dung video.

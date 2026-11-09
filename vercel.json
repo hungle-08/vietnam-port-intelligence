@@ -4,6 +4,10 @@
     {
       "path": "/api/cron/php-vessel-plans",
       "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/cdn-arrivals",
+      "schedule": "0 0 * * *"
     }
   ]
 }

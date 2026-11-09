@@ -21,7 +21,9 @@
     "php:verify": "NODE_OPTIONS=--conditions=react-server tsx scripts/verify-php-data.ts",
     "php:verify-cron": "NODE_OPTIONS=--conditions=react-server tsx scripts/verify-php-cron.ts",
     "php:verify-report": "NODE_OPTIONS=--conditions=react-server tsx scripts/verify-php-report.ts",
-    "haiphong:restore": "tsx scripts/restore-haiphong-history.ts"
+    "haiphong:restore": "tsx scripts/restore-haiphong-history.ts",
+    "cdn:backfill": "NODE_OPTIONS=--conditions=react-server tsx scripts/backfill-cdn-arrivals.ts",
+    "cdn:dwt": "NODE_OPTIONS=--conditions=react-server tsx scripts/backfill-cdn-dwt.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
