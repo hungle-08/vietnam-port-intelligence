@@ -7,4 +7,4 @@ workers_dev = false
 enabled = true
 
 [triggers]
-crons = ["15,25,35 3 * * MON-FRI"]
+crons = ["10,20,30 3 * * MON-FRI"]

@@ -233,6 +233,6 @@ Nguồn [Cảng Đà Nẵng](https://danangport.com/tra-cuu-tau-container/) cung
 
 ### Lưu link YouTube livestream
 
-Trang `/vi/livestreams` hiển thị các link đã lưu. Vercel cần `YOUTUBE_API_KEY` (YouTube Data API v3) và `CRON_SECRET`. Worker tại `workers/youtube-live` gọi endpoint `/api/cron/youtube-live` lúc 10:15, 10:25 và 10:35 từ thứ Hai đến thứ Sáu theo giờ Việt Nam. Cron của Cloudflare dùng UTC và `MON-FRI`; không dùng `1-5` như GitHub. Worker cần biến `APP_URL` là URL gốc HTTPS của Vercel và secret `CRON_SECRET` trùng với Vercel. Cấu hình và triển khai Worker theo hướng dẫn trong `workers/youtube-live/README.md`.
+Trang `/vi/livestreams` hiển thị các link đã lưu. Vercel cần `YOUTUBE_API_KEY` (YouTube Data API v3) và `CRON_SECRET`. Worker tại `workers/youtube-live` gọi endpoint `/api/cron/youtube-live` lúc 10:10, 10:20 và 10:30 từ thứ Hai đến thứ Sáu theo giờ Việt Nam. Cron của Cloudflare dùng UTC và `MON-FRI`; không dùng `1-5` như GitHub. Worker cần biến `APP_URL` là URL gốc HTTPS của Vercel và secret `CRON_SECRET` trùng với Vercel. Cấu hình và triển khai Worker theo hướng dẫn trong `workers/youtube-live/README.md`.
 
 Lịch không bảo đảm đúng phút tuyệt đối và các thay đổi Cron Trigger có thể mất đến 15 phút để có hiệu lực. Không tìm thấy livestream tại một thời điểm không chứng minh cả ngày không có livestream. Link chỉ xem được nếu YouTube cho phép; ứng dụng không lưu nội dung video.

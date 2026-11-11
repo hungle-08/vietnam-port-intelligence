@@ -1,6 +1,6 @@
 # Cloudflare Worker cho lịch livestream
 
-Worker gọi endpoint Vercel vào thứ Hai–thứ Sáu lúc 10:15, 10:25 và 10:35 giờ Việt Nam. Cloudflare dùng giờ UTC; cấu hình `MON-FRI` tránh khác biệt về cách đánh số thứ trong tuần.
+Worker gọi endpoint Vercel vào thứ Hai–thứ Sáu lúc 10:10, 10:20 và 10:30 giờ Việt Nam. Cloudflare dùng giờ UTC; cấu hình `MON-FRI` tránh khác biệt về cách đánh số thứ trong tuần.
 
 ## Chuẩn bị
 
@@ -25,7 +25,7 @@ Worker gọi endpoint Vercel vào thứ Hai–thứ Sáu lúc 10:15, 10:25 và 1
    ```
 
    `--keep-vars` giữ các biến và secret đã thiết lập trong Dashboard. Không thêm giá trị secret vào file cấu hình. Lệnh deploy cập nhật Worker trên tài khoản Cloudflare.
-4. Kiểm tra **Settings → Triggers → Cron Triggers** có lịch `15,25,35 3 * * MON-FRI`. Cloudflare cho biết thay đổi cron có thể mất đến 15 phút để lan truyền.
+4. Kiểm tra **Settings → Triggers → Cron Triggers** có lịch `10,20,30 3 * * MON-FRI`. Cloudflare cho biết thay đổi cron có thể mất đến 15 phút để lan truyền.
 5. Kiểm tra **Workers Logs** và **Cron Events** sau lần chạy theo lịch; trạng thái `found`, `none` hoặc `skipped` là đã gọi thành công, HTTP 401/503 hoặc lỗi khác cần xử lý. Lịch sử Cron Events của Worker mới có thể xuất hiện trễ. Đối chiếu bảng `youtube_live_checks` trên Neon và trang `/vi/livestreams`. Nếu chưa có lịch sử, chờ lịch tiếp theo; kết quả build hay triển khai không chứng minh cron đã chạy.
 
 Sau khi xác nhận Cloudflare chạy theo lịch thành công, đưa thay đổi xóa `.github/workflows/youtube-live.yml` lên nhánh mặc định hoặc tắt workflow **Capture YouTube live links** trong GitHub Actions để tránh chạy trùng. Việc xóa file local không tự tắt workflow trên GitHub. Trong giai đoạn chuyển tiếp, endpoint lưu theo `video_id` nên các lần gọi trùng không tạo thêm bản ghi video.
