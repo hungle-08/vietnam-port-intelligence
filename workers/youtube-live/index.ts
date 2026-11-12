@@ -9,7 +9,7 @@ const worker = {
     const response = await fetch(endpoint, {
       method: 'GET',
       headers: { Authorization: `Bearer ${env.CRON_SECRET}` },
-      redirect: 'error',
+      redirect: 'manual',
       signal: AbortSignal.timeout(70_000),
     });
     if (!response.ok) throw new Error(`Livestream endpoint returned HTTP ${response.status}`);

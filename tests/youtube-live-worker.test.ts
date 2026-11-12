@@ -11,7 +11,7 @@ describe('livestream scheduled worker',()=>{
   const [url,options]=fetchMock.mock.calls[0];
   expect(String(url)).toBe('https://example.vercel.app/api/cron/youtube-live');
   expect(options.headers.Authorization).toBe('Bearer example-secret');
-  expect(options.redirect).toBe('error');
+  expect(options.redirect).toBe('manual');
  });
  it('fails the invocation on an HTTP error',async()=>{
   vi.stubGlobal('fetch',vi.fn().mockResolvedValue(new Response(null,{status:503})));
@@ -27,4 +27,11 @@ describe('livestream scheduled worker',()=>{
 it('treats already saved as a successful check',async()=>{
  vi.stubGlobal('fetch',vi.fn().mockResolvedValue(new Response(JSON.stringify({status:'skipped'}),{status:200})));
  await expect(worker.scheduled({}, {APP_URL:'https://example.vercel.app',CRON_SECRET:'secret'})).resolves.toBeUndefined();
+});
+
+it('rejects redirects without forwarding credentials to the target',async()=>{
+ const fetchMock=vi.fn().mockResolvedValue(new Response(null,{status:302,headers:{Location:'https://other.example/path'}}));
+ vi.stubGlobal('fetch',fetchMock);
+ await expect(worker.scheduled({}, {APP_URL:'https://example.vercel.app',CRON_SECRET:'secret'})).rejects.toThrow('302');
+ expect(fetchMock).toHaveBeenCalledOnce();
 });
